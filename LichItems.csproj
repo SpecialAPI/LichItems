@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A9EF0C54-E80E-4D2C-86EA-AD425C05C9E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LichItems</RootNamespace>
+    <AssemblyName>LichItems</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>D:\Documents\Mods_dependicas\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp.Base.mm">
+      <HintPath>D:\Documents\Mods_dependicas\Assembly-CSharp.Base.mm.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomCharacters">
+      <HintPath>D:\Downloads\CustomCharacters.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>D:\Documents\Mods_dependicas\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>D:\Documents\Mods_dependicas\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>D:\Documents\Mods_dependicas\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>D:\Documents\Mods_dependicas\PlayMaker.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule.Base.mm">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.CoreModule.Base.mm.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>D:\Documents\Mods_dependicas\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LichsBook.cs" />
+    <Compile Include="LichsBookItem.cs" />
+    <Compile Include="LichsGun.cs" />
+    <Compile Include="TrophyOfTheJammed.cs" />
+    <Compile Include="ItemAPI\CustomSynergies.cs" />
+    <Compile Include="ItemAPI\FakePrefab.cs" />
+    <Compile Include="ItemAPI\FakePrefabHooks.cs" />
+    <Compile Include="ItemAPI\ItemBuilder.cs" />
+    <Compile Include="ItemAPI\ResourceExtractor.cs" />
+    <Compile Include="ItemAPI\SpriteBuilder.cs" />
+    <Compile Include="LichModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\lichsbook_depoy_001.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_002.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_003.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_004.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_005.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_006.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_007.png" />
+    <EmbeddedResource Include="Resources\lichsbook_depoy_008.png" />
+    <EmbeddedResource Include="Resources\lichsbook_item_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Trophy_of_the_Jammed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\lichsbook_shadow_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_chest_return_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_chest_return_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_chest_return_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_chest_return_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001007.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001008.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_die_vfx_001009.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_007.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_008.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_009.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_007.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_008.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_back_right_009.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_000.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_007.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_008.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_009.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_007.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_008.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_dodge_front_right_009.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_right_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_back_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_right_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_idle_front_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_back_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_back_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_back_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_back_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_right_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_jetpack_front_right_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_hand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_hand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_right_twohand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_back_twohand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_hand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_hand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_right_twohand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_move_front_twohand_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pet_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pet_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_down_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_down_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_down_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_return_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_return_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_return_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_pitfall_return_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_slide_altright_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_slide_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_slide_up_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_spinfall_006.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_back_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_back_right_002-001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_back_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_back_right_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_hand_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_hand_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tablekick_front_right_hand_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_001.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_002.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_003.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_004.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_005.png" />
+    <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_006.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
