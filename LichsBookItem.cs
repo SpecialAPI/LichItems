@@ -204,12 +204,21 @@ namespace LichItems
                 }
             }
             page.Apply();
-
             foreach (var clip in library.clips)
             {
                 for (int i = 0; i < clip.frames.Length; i++)
                 {
                     clip.frames[i].spriteCollection = copyCollection;
+                }
+            }
+            foreach (tk2dSpriteAnimationClip clip in library.clips)
+            {
+                foreach (tk2dSpriteAnimationFrame frame in clip.frames)
+                {
+                    if (!string.IsNullOrEmpty(frame.eventAudio) && (frame.eventAudio == "Play_FS" || frame.eventAudio == "Play_CHR_boot_stairs_01"))
+                    {
+                        frame.eventAudio = "";
+                    }
                 }
             }
             GameObject spriteObj = new GameObject("OverrideHandSprite");
