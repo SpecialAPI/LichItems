@@ -24,7 +24,7 @@ namespace LichItems
             gun.DefaultModule.angleVariance = 0;
             gun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.MEDIUM_BULLET;
             InputGuidedProjectile projectile = CopyFields<InputGuidedProjectile>(UnityEngine.Object.Instantiate((PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]));
-            projectile.trackingSpeed = 240f;
+            projectile.trackingSpeed = 200f;
             projectile.dumbfireTime = -1f;
             projectile.gameObject.SetActive(false);
             FakePrefab.MarkAsFakePrefab(projectile.gameObject);
@@ -34,6 +34,7 @@ namespace LichItems
             projectile.shouldRotate = true;
             projectile.name = "LichsGun_Projectile";
             projectile.baseData.range = 20f;
+            projectile.baseData.speed = 22f;
             SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.reloadClipLaunchFrame = 0;
             gun.DefaultModule.cooldownTime = 0.1f;
@@ -305,7 +306,7 @@ namespace LichItems
             gun.DefaultModule.angleVariance = 0;
             gun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.MEDIUM_BULLET;
             InputGuidedProjectile projectile = CopyFields<InputGuidedProjectile>(UnityEngine.Object.Instantiate((PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]));
-            projectile.trackingSpeed = 240f;
+            projectile.trackingSpeed = 200f;
             projectile.dumbfireTime = -1f;
             projectile.gameObject.SetActive(false);
             FakePrefab.MarkAsFakePrefab(projectile.gameObject);
@@ -315,6 +316,7 @@ namespace LichItems
             projectile.shouldRotate = true;
             projectile.name = "LichsGun2_Projectile";
             projectile.baseData.range = 30f;
+            projectile.baseData.speed = 22f;
             SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.reloadClipLaunchFrame = 0;
             gun.DefaultModule.cooldownTime = 0.1f;

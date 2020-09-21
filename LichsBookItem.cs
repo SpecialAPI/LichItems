@@ -200,6 +200,7 @@ namespace LichItems
                 if (def != null)
                 {
                     def.ReplaceTexture(tex);
+                    def.name = def.name.Replace("knight", "inflich");
                     MakeOffset(def, new Vector2(-0.0625f, 0f), false);
                 }
             }
@@ -327,7 +328,7 @@ namespace LichItems
                     StatModifier mod1 = StatModifier.Create(PlayerStats.StatType.MovementSpeed, StatModifier.ModifyMethod.ADDITIVE, 1f);
                     StatModifier mod2 = StatModifier.Create(PlayerStats.StatType.RateOfFire, StatModifier.ModifyMethod.ADDITIVE, 0.15f);
                     StatModifier mod3 = StatModifier.Create(PlayerStats.StatType.ReloadSpeed, StatModifier.ModifyMethod.ADDITIVE, -0.1f);
-                    StatModifier mod4 = StatModifier.Create(PlayerStats.StatType.DodgeRollSpeedMultiplier, StatModifier.ModifyMethod.ADDITIVE, -0.1f);
+                    StatModifier mod4 = StatModifier.Create(PlayerStats.StatType.DodgeRollSpeedMultiplier, StatModifier.ModifyMethod.ADDITIVE, 0.15f);
                     player.ownerlessStatModifiers.Add(mod1);
                     player.ownerlessStatModifiers.Add(mod2);
                     player.ownerlessStatModifiers.Add(mod3);
