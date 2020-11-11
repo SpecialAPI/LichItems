@@ -18,13 +18,13 @@ namespace LichItems
             GameObject obj = new GameObject(itemName);
             var item = obj.AddComponent<LichsBookItem>();
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
-            string shortDesc = "Tabletop Gun Playing";
-            string longDesc = "A book about the know-how of shooting skills and knowledge of magic.\nThe book itself has magical power, Just unfolding it has a mysterious effect.!";
+            string shortDesc = "Bang Bang Bang";
+            string longDesc = "A book about the know-how of shooting skills and knowledge of magic.\nThe book itself has magical power, Just unfolding it has a mysterious effect.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
-            ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 500);
+            ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 600);
             item.consumable = false;
             item.quality = ItemQuality.C;
-            Game.Items.Rename("spapi:lich's_book", "spapi:lichs_book"); 
+            Game.Items.Rename("spapi:lich's_book", "spapi:lichs_book");
             GameObject shadow = SpriteBuilder.SpriteFromResource("LichItems/Resources/lichsbook_shadow_001");
             shadow.SetActive(false);
             FakePrefab.MarkAsFakePrefab(shadow);
@@ -50,7 +50,7 @@ namespace LichItems
                 SpriteBuilder.AddSpriteToCollection("LichItems/Resources/lichsbook_depoy_007", book.GetComponent<tk2dBaseSprite>().Collection),
                 SpriteBuilder.AddSpriteToCollection("LichItems/Resources/lichsbook_depoy_008", book.GetComponent<tk2dBaseSprite>().Collection),
             };
-            foreach(int id in ids)
+            foreach (int id in ids)
             {
                 ConstructOffsetsFromAnchor(book.GetComponent<tk2dBaseSprite>().Collection.spriteDefinitions[id], tk2dBaseSprite.Anchor.LowerCenter);
             }
@@ -309,6 +309,14 @@ namespace LichItems
             return false;
         }
 
+        private void RevealAllRooms(PlayerController player)
+        {
+            if (Minimap.Instance != null)
+            {
+                Minimap.Instance.RevealAllRooms(true);
+            }
+        }
+
         private void ProcessInfinilichStatus(PlayerController player, bool forceDisable = false)
         {
             bool flag = player && PlayerHasActiveSynergy(player, "Master of Gungeon") && !forceDisable;
@@ -318,6 +326,12 @@ namespace LichItems
                 if (player)
                 {
                     this.m_transformed = true;
+                    if (Minimap.Instance != null)
+                    {
+                        Minimap.Instance.RevealAllRooms(true);
+                    }
+                    player.OnNewFloorLoaded += RevealAllRooms;
+                    player.carriedConsumables.InfiniteKeys = true;
                     player.OverrideAnimationLibrary = this.replacementLibrary;
                     player.SetOverrideShader(ShaderCache.Acquire(player.LocalShaderName));
                     if (player.characterIdentity == PlayableCharacters.Eevee)
@@ -325,18 +339,9 @@ namespace LichItems
                         player.GetComponent<CharacterAnimationRandomizer>().AddOverrideAnimLibrary(this.replacementLibrary);
                     }
                     player.ChangeHandsToCustomType(this.replacementHandSprite.Collection, this.replacementHandSprite.spriteId);
-                    StatModifier mod1 = StatModifier.Create(PlayerStats.StatType.MovementSpeed, StatModifier.ModifyMethod.ADDITIVE, 1f);
-                    StatModifier mod2 = StatModifier.Create(PlayerStats.StatType.RateOfFire, StatModifier.ModifyMethod.ADDITIVE, 0.15f);
-                    StatModifier mod3 = StatModifier.Create(PlayerStats.StatType.ReloadSpeed, StatModifier.ModifyMethod.ADDITIVE, -0.1f);
-                    StatModifier mod4 = StatModifier.Create(PlayerStats.StatType.DodgeRollSpeedMultiplier, StatModifier.ModifyMethod.ADDITIVE, 0.15f);
+                    StatModifier mod1 = StatModifier.Create(PlayerStats.StatType.AdditionalItemCapacity, StatModifier.ModifyMethod.ADDITIVE, 1);
                     player.ownerlessStatModifiers.Add(mod1);
-                    player.ownerlessStatModifiers.Add(mod2);
-                    player.ownerlessStatModifiers.Add(mod3);
-                    player.ownerlessStatModifiers.Add(mod4);
                     this.synergyModifiers.Add(mod1);
-                    this.synergyModifiers.Add(mod2);
-                    this.synergyModifiers.Add(mod3);
-                    this.synergyModifiers.Add(mod4);
                     player.stats.RecalculateStats(player, false, false);
                 }
             }
@@ -344,6 +349,8 @@ namespace LichItems
             {
                 if (this.m_lastPlayer)
                 {
+                    this.m_lastPlayer.OnNewFloorLoaded -= RevealAllRooms;
+                    this.m_lastPlayer.carriedConsumables.InfiniteKeys = false;
                     this.m_lastPlayer.OverrideAnimationLibrary = null;
                     this.m_lastPlayer.ClearOverrideShader();
                     if (this.m_lastPlayer.characterIdentity == PlayableCharacters.Eevee)
@@ -351,7 +358,7 @@ namespace LichItems
                         this.m_lastPlayer.GetComponent<CharacterAnimationRandomizer>().RemoveOverrideAnimLibrary(this.replacementLibrary);
                     }
                     this.m_lastPlayer.RevertHandsToBaseType();
-                    foreach(StatModifier mod in this.synergyModifiers)
+                    foreach (StatModifier mod in this.synergyModifiers)
                     {
                         this.m_lastPlayer.ownerlessStatModifiers.Remove(mod);
                     }

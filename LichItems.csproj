@@ -78,10 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedCompanionTransformSynerg.cs" />
+    <Compile Include="AdvancedCompanionItem.cs" />
+    <Compile Include="CrossChamber.cs" />
+    <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="LichsBook.cs" />
     <Compile Include="LichsBookItem.cs" />
     <Compile Include="LichsGun.cs" />
-    <Compile Include="TrophyOfTheJammed.cs" />
     <Compile Include="ItemAPI\CustomSynergies.cs" />
     <Compile Include="ItemAPI\FakePrefab.cs" />
     <Compile Include="ItemAPI\FakePrefabHooks.cs" />
@@ -101,9 +104,6 @@
     <EmbeddedResource Include="Resources\lichsbook_depoy_007.png" />
     <EmbeddedResource Include="Resources\lichsbook_depoy_008.png" />
     <EmbeddedResource Include="Resources\lichsbook_item_001.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Trophy_of_the_Jammed.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\lichsbook_shadow_001.png" />
@@ -333,6 +333,52 @@
     <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_004.png" />
     <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_005.png" />
     <EmbeddedResource Include="Resources\InfinilichTransformation\knight_tarnisher_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Cross_Chamber.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\IdleLeft\tomb_idle_left_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\IdleLeft\tomb_idle_left_002.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\IdleRight\tomb_idle_right_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_001.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_002.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_003.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_004.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_005.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveLeft\tomb_run_left_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_001.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_002.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_003.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_004.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_005.png" />
+    <EmbeddedResource Include="Resources\CrossChamber\MoveRight\tomb_run_right_006.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\IdleRight\tomb_idle_right_002.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\HitLeft\tomb_hit_left_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\HitRight\tomb_hit_right_001.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\HitLeft\tomb_hit_left_002.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\HitRight\tomb_hit_right_002.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CrossChamber\Hand\hand_001.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

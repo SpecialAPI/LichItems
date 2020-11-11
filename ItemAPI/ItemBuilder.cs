@@ -33,6 +33,7 @@ namespace LichItems.ItemAPI
         public static void Init()
         {
             FakePrefabHooks.Init();
+            CompanionBuilder.Init();
             LoadShopTables();
         }
 

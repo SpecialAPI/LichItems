@@ -20,10 +20,11 @@ namespace LichItems
         public override void Start()
         {
             ItemBuilder.Init();
-            TrophyOfTheJammed.Init();
+            CrossChamber.Init();
             LichsBookItem.Init();
             LichsGun.Init();
             CustomSynergies.Add("Master of Gungeon", new List<string> { "spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets" });
+            CustomSynergies.Add("Baby Peacemaker", new List<string> { "spapi:cross_chamber", "magnum" });
             Hook getNicknamehook = new Hook(
                     typeof(StringTableManager).GetMethod("GetTalkingPlayerNick", BindingFlags.NonPublic | BindingFlags.Static),
                     typeof(LichModule).GetMethod("GetTalkingPlayerNickHook")
@@ -121,9 +122,9 @@ namespace LichItems
                     UnityEngine.Object.DontDestroyOnLoad(dustup);
                     dustup.AddComponent<InstantDestroyDustup>();
                     player.OverrideDustUp = dustup;
-                    foreach(tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips)
+                    foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips)
                     {
-                        foreach(tk2dSpriteAnimationFrame frame in clip.frames)
+                        foreach (tk2dSpriteAnimationFrame frame in clip.frames)
                         {
                             if (!string.IsNullOrEmpty(frame.eventAudio) && (frame.eventAudio == "Play_FS" || frame.eventAudio == "Play_CHR_boot_stairs_01"))
                             {

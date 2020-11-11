@@ -15,8 +15,8 @@ namespace LichItems
         {
             Gun gun = ETGMod.Databases.Items.NewGun("Lich's Gun", "lichsgun");
             Game.Items.Rename("outdated_gun_mods:lich's_gun", "spapi:lichs_gun");
-            GunExt.SetShortDescription(gun, "Bullet Curve");
-            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.\nLooking into the muzzle, you can sometimes hear a scream of anger from a loaded bullet.");
+            GunExt.SetShortDescription(gun, "Bullet Dance");
+            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
             GunExt.SetupSprite(gun, null, "lichsgun_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
@@ -24,16 +24,16 @@ namespace LichItems
             gun.DefaultModule.angleVariance = 0;
             gun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.MEDIUM_BULLET;
             InputGuidedProjectile projectile = CopyFields<InputGuidedProjectile>(UnityEngine.Object.Instantiate((PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]));
-            projectile.trackingSpeed = 200f;
+            projectile.trackingSpeed = 500f;
             projectile.dumbfireTime = -1f;
             projectile.gameObject.SetActive(false);
             FakePrefab.MarkAsFakePrefab(projectile.gameObject);
             UnityEngine.Object.DontDestroyOnLoad(projectile);
             gun.DefaultModule.projectiles[0] = projectile;
-            projectile.baseData.damage = 6f;
+            projectile.baseData.damage = 5f;
             projectile.shouldRotate = true;
             projectile.name = "LichsGun_Projectile";
-            projectile.baseData.range = 20f;
+            projectile.baseData.range = 18f;
             projectile.baseData.speed = 22f;
             SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.reloadClipLaunchFrame = 0;
@@ -109,7 +109,7 @@ namespace LichItems
             gun.gunSwitchGroup = "SAA";
             gun.muzzleFlashEffects = muzzleFlashVfx;
             gun.reloadTime = 1.1f;
-            gun.SetBaseMaxAmmo(200);
+            gun.SetBaseMaxAmmo(350);
             gun.quality = PickupObject.ItemQuality.D;
             gun.barrelOffset.transform.localPosition = new Vector3(1.1875f, 0.5625f, 0f);
             gun.gunClass = GunClass.PISTOL;
@@ -297,8 +297,8 @@ namespace LichItems
         {
             Gun gun = ETGMod.Databases.Items.NewGun("Synergy Lich's Gun", "lichsgun2");
             Game.Items.Rename("outdated_gun_mods:synergy_lich's_gun", "spapi:lichs_gun+master_of_the_gungeon");
-            GunExt.SetShortDescription(gun, "Bullet Curve");
-            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.\nLooking into the muzzle, you can sometimes hear a scream of anger from a loaded bullet.");
+            GunExt.SetShortDescription(gun, "Bullet Dance");
+            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
             GunExt.SetupSprite(gun, null, "lichsgun2_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
@@ -306,7 +306,7 @@ namespace LichItems
             gun.DefaultModule.angleVariance = 0;
             gun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.MEDIUM_BULLET;
             InputGuidedProjectile projectile = CopyFields<InputGuidedProjectile>(UnityEngine.Object.Instantiate((PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]));
-            projectile.trackingSpeed = 200f;
+            projectile.trackingSpeed = 500f;
             projectile.dumbfireTime = -1f;
             projectile.gameObject.SetActive(false);
             FakePrefab.MarkAsFakePrefab(projectile.gameObject);
@@ -315,7 +315,7 @@ namespace LichItems
             projectile.baseData.damage = 8f;
             projectile.shouldRotate = true;
             projectile.name = "LichsGun2_Projectile";
-            projectile.baseData.range = 30f;
+            projectile.baseData.range = 40f;
             projectile.baseData.speed = 22f;
             SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.reloadClipLaunchFrame = 0;
@@ -339,7 +339,7 @@ namespace LichItems
             gun.gunHandedness = GunHandedness.HiddenOneHanded;
             gun.muzzleFlashEffects = original.muzzleFlashEffects;
             gun.reloadTime = 1.1f;
-            gun.SetBaseMaxAmmo(200);
+            gun.SetBaseMaxAmmo(700);
             gun.quality = PickupObject.ItemQuality.SPECIAL;
             gun.barrelOffset.transform.localPosition = new Vector3(1.1875f, 0.5625f, 0f);
             gun.gunClass = GunClass.PISTOL;

@@ -12,20 +12,19 @@ namespace LichItems
 	{
 		public LichsBook()
 		{
-			this.Duration = 10f;
+			this.Duration = 8f;
 			this.Radius = 5f;
 		}
 
 		public IEnumerator Start()
 		{
 			this.HandleRadialIndicator();
-			Instantiate(this.shadowPrefab, base.transform.position - base.GetComponent<tk2dBaseSprite>().GetRelativePositionFromAnchor(tk2dBaseSprite.Anchor.UpperCenter).WithX(0).ToVector3ZUp(0) + new Vector3(0f, 0.1875f), Quaternion.identity, 
+			Instantiate(this.shadowPrefab, base.transform.position - base.GetComponent<tk2dBaseSprite>().GetRelativePositionFromAnchor(tk2dBaseSprite.Anchor.UpperCenter).WithX(0).ToVector3ZUp(0) + new Vector3(0f, 0.1875f), Quaternion.identity,
 				this.transform);
 			yield return new WaitForSeconds(this.Duration);
 			Destroy(this.gameObject);
 			yield break;
 		}
-
 		private void Update()
 		{
 			if (Dungeon.IsGenerating || GameManager.Instance.IsLoadingLevel)
@@ -39,13 +38,13 @@ namespace LichItems
 				bool hasStat = this.statModifiers.ContainsKey(playerController);
 				if (playerController && Vector2.Distance(playerController.CenterPosition, base.transform.position.XY()) < num)
 				{
-                    if (!hasStat)
-                    {
-                        StatModifier mod = StatModifier.Create(PlayerStats.StatType.ReloadSpeed, StatModifier.ModifyMethod.ADDITIVE, -1000f);
+					if (!hasStat)
+					{
+						StatModifier mod = StatModifier.Create(PlayerStats.StatType.ReloadSpeed, StatModifier.ModifyMethod.ADDITIVE, -1000f);
 						playerController.ownerlessStatModifiers.Add(mod);
 						playerController.stats.RecalculateStats(playerController, true, false);
 						this.statModifiers.Add(playerController, mod);
-                    }
+					}
 				}
 				else if (playerController)
 				{
