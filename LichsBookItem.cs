@@ -287,7 +287,7 @@ namespace LichItems
             this.ProcessInfinilichStatus(base.LastOwner, false);
         }
 
-        protected override void OnDestroy()
+        public override void OnDestroy()
         {
             if (this.m_transformed)
             {
@@ -375,7 +375,7 @@ namespace LichItems
             return !this.m_instanceBook && base.CanBeUsed(user);
         }
 
-        protected override void DoEffect(PlayerController user)
+        public override void DoEffect(PlayerController user)
         {
             this.m_instanceBook = Instantiate(LichsBookPrefab, user.CenterPosition.ToVector3ZisY(0f), Quaternion.identity, null);
         }

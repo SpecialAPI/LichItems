@@ -33,10 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AdvancedCompanionItem.cs" />
-    <Compile Include="AdvancedCompanionTransformSynergy.cs" />
-    <Compile Include="AdvancedGunBehaviour.cs" />
+    <Compile Include="ItemAPI\AdvancedCompanionItem.cs" />
+    <Compile Include="ItemAPI\AdvancedCompanionTransformSynergy.cs" />
+    <Compile Include="ItemAPI\AdvancedGunBehaviour.cs" />
     <Compile Include="CrossChamber.cs" />
+    <Compile Include="ItemAPI\AdvancedTransformGunSynergyProcessor.cs" />
     <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="LichsBook.cs" />
     <Compile Include="LichsBookItem.cs" />

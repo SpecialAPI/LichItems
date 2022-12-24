@@ -80,6 +80,32 @@ namespace LichItems
             }
         }
 
+        public static bool ReloadHook(Func<Gun, bool> orig, Gun self)
+        {
+            AdvancedGunBehaviour behav = self.GetComponent<AdvancedGunBehaviour>();
+            if (behav != null)
+            {
+                if (behav.preventNormalReloadAudio)
+                {
+                    AkSoundEngine.SetSwitch("WPN_Guns", "Kthulu", self.gameObject);
+                }
+                else if (!string.IsNullOrEmpty(behav.overrideReloadSwitchGroup))
+                {
+                    AkSoundEngine.SetSwitch("WPN_Guns", behav.overrideReloadSwitchGroup, self.gameObject);
+                }
+            }
+            bool result = orig(self);
+            if (behav != null && (behav.preventNormalReloadAudio || !string.IsNullOrEmpty(behav.overrideReloadSwitchGroup)))
+            {
+                AkSoundEngine.SetSwitch("WPN_Guns", self.gunSwitchGroup, self.gameObject);
+                if (result && behav.preventNormalReloadAudio && !string.IsNullOrEmpty(behav.overrideNormalReloadAudio))
+                {
+                    AkSoundEngine.PostEvent(self.GetComponent<AdvancedGunBehaviour>().overrideNormalReloadAudio, self.gameObject);
+                }
+            }
+            return result;
+        }
+
         /// <summary>
         /// Saves the data of the gun to a list. Save the variables you want to be saved here!
         /// </summary>
@@ -287,14 +313,14 @@ namespace LichItems
         /// <param name="gun">The gun.</param>
         public virtual void OnReload(PlayerController player, Gun gun)
         {
-            if (this.preventNormalReloadAudio)
-            {
-                AkSoundEngine.PostEvent("Stop_WPN_All", base.gameObject);
-                if (!string.IsNullOrEmpty(this.overrideNormalReloadAudio))
-                {
-                    AkSoundEngine.PostEvent(this.overrideNormalReloadAudio, base.gameObject);
-                }
-            }
+        }
+
+        public static void Setup()
+        {
+            Hook hook = new Hook(
+              typeof(Gun).GetMethod("Reload", BindingFlags.Public | BindingFlags.Instance),
+              typeof(AdvancedGunBehaviour).GetMethod("ReloadHook")
+            );
         }
 
         /// <summary>

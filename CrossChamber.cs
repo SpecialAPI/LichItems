@@ -230,10 +230,10 @@ namespace LichItems
                         OverrideProjectile = true,
                         ProjectileData = new ProjectileData()
                         {
-                            damage = 10f,
+                            damage = 5f,
                             speed = 10f,
-                            range = 30f,
-                            force = 5f,
+                            range = 60f,
+                            force = 10f,
                             damping = 0f,
                             UsesCustomAccelerationCurve = false,
                             AccelerationCurve = null,

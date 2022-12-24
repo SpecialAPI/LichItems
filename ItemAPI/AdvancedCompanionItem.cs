@@ -94,7 +94,7 @@ namespace LichItems
             this.SetExtantCompanion(null);
         }
 
-        protected override void Update()
+        public override void Update()
         {
             base.Update();
             if (!Dungeon.IsGenerating && this.m_owner && this.UseAdvancedSynergies && this.AdvancedSynergies.Length > 0)
@@ -154,7 +154,7 @@ namespace LichItems
             return base.Drop(player);
         }
 
-        protected override void OnDestroy()
+        public override void OnDestroy()
         {
             if (this.m_owner != null)
             {
