@@ -18,8 +18,8 @@ namespace LichItems
             GameObject obj = new GameObject(itemName);
             var item = obj.AddComponent<LichsBookItem>();
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
-            string shortDesc = "Bang Bang Bang";
-            string longDesc = "A book about the know-how of shooting skills and knowledge of magic.\nThe book itself has magical power, Just unfolding it has a mysterious effect.";
+            string shortDesc = "Reload Spell";
+            string longDesc = "This is Book from Gungeon Master.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
             ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 600);
             item.consumable = false;
@@ -284,14 +284,14 @@ namespace LichItems
         public override void Update()
         {
             base.Update();
-            this.ProcessInfinilichStatus(base.LastOwner, false);
+            ProcessInfinilichStatus(base.LastOwner, false);
         }
 
         public override void OnDestroy()
         {
-            if (this.m_transformed)
+            if (m_transformed)
             {
-                this.ProcessInfinilichStatus(null, true);
+                ProcessInfinilichStatus(null, true);
             }
             base.OnDestroy();
         }
@@ -319,65 +319,65 @@ namespace LichItems
 
         private void ProcessInfinilichStatus(PlayerController player, bool forceDisable = false)
         {
-            bool flag = player && PlayerHasActiveSynergy(player, "Master of Gungeon") && !forceDisable;
-            if (flag && !this.m_transformed)
+            bool flag = player && PlayerHasActiveSynergy(player, "Master of the Gungeon") && !forceDisable;
+            if (flag && !m_transformed)
             {
-                this.m_lastPlayer = player;
+                m_lastPlayer = player;
                 if (player)
                 {
-                    this.m_transformed = true;
+                    m_transformed = true;
                     if (Minimap.Instance != null)
                     {
                         Minimap.Instance.RevealAllRooms(true);
                     }
                     player.OnNewFloorLoaded += RevealAllRooms;
                     player.carriedConsumables.InfiniteKeys = true;
-                    player.OverrideAnimationLibrary = this.replacementLibrary;
+                    player.OverrideAnimationLibrary = replacementLibrary;
                     player.SetOverrideShader(ShaderCache.Acquire(player.LocalShaderName));
                     if (player.characterIdentity == PlayableCharacters.Eevee)
                     {
-                        player.GetComponent<CharacterAnimationRandomizer>().AddOverrideAnimLibrary(this.replacementLibrary);
+                        player.GetComponent<CharacterAnimationRandomizer>().AddOverrideAnimLibrary(replacementLibrary);
                     }
-                    player.ChangeHandsToCustomType(this.replacementHandSprite.Collection, this.replacementHandSprite.spriteId);
+                    player.ChangeHandsToCustomType(replacementHandSprite.Collection, replacementHandSprite.spriteId);
                     StatModifier mod1 = StatModifier.Create(PlayerStats.StatType.AdditionalItemCapacity, StatModifier.ModifyMethod.ADDITIVE, 1);
                     player.ownerlessStatModifiers.Add(mod1);
-                    this.synergyModifiers.Add(mod1);
+                    synergyModifiers.Add(mod1);
                     player.stats.RecalculateStats(player, false, false);
                 }
             }
-            else if (this.m_transformed && !flag)
+            else if (m_transformed && !flag)
             {
-                if (this.m_lastPlayer)
+                if (m_lastPlayer)
                 {
-                    this.m_lastPlayer.OnNewFloorLoaded -= RevealAllRooms;
-                    this.m_lastPlayer.carriedConsumables.InfiniteKeys = false;
-                    this.m_lastPlayer.OverrideAnimationLibrary = null;
-                    this.m_lastPlayer.ClearOverrideShader();
-                    if (this.m_lastPlayer.characterIdentity == PlayableCharacters.Eevee)
+                    m_lastPlayer.OnNewFloorLoaded -= RevealAllRooms;
+                    m_lastPlayer.carriedConsumables.InfiniteKeys = false;
+                    m_lastPlayer.OverrideAnimationLibrary = null;
+                    m_lastPlayer.ClearOverrideShader();
+                    if (m_lastPlayer.characterIdentity == PlayableCharacters.Eevee)
                     {
-                        this.m_lastPlayer.GetComponent<CharacterAnimationRandomizer>().RemoveOverrideAnimLibrary(this.replacementLibrary);
+                        m_lastPlayer.GetComponent<CharacterAnimationRandomizer>().RemoveOverrideAnimLibrary(replacementLibrary);
                     }
-                    this.m_lastPlayer.RevertHandsToBaseType();
-                    foreach (StatModifier mod in this.synergyModifiers)
+                    m_lastPlayer.RevertHandsToBaseType();
+                    foreach (StatModifier mod in synergyModifiers)
                     {
-                        this.m_lastPlayer.ownerlessStatModifiers.Remove(mod);
+                        m_lastPlayer.ownerlessStatModifiers.Remove(mod);
                     }
-                    this.synergyModifiers.Clear();
-                    this.m_lastPlayer.stats.RecalculateStats(this.m_lastPlayer, false, false);
-                    this.m_lastPlayer = null;
+                    synergyModifiers.Clear();
+                    m_lastPlayer.stats.RecalculateStats(m_lastPlayer, false, false);
+                    m_lastPlayer = null;
                 }
-                this.m_transformed = false;
+                m_transformed = false;
             }
         }
 
         public override bool CanBeUsed(PlayerController user)
         {
-            return !this.m_instanceBook && base.CanBeUsed(user);
+            return !m_instanceBook && base.CanBeUsed(user);
         }
 
         public override void DoEffect(PlayerController user)
         {
-            this.m_instanceBook = Instantiate(LichsBookPrefab, user.CenterPosition.ToVector3ZisY(0f), Quaternion.identity, null);
+            m_instanceBook = Instantiate(LichsBookPrefab, user.CenterPosition.ToVector3ZisY(0f), Quaternion.identity, null);
         }
 
         public GameObject LichsBookPrefab;

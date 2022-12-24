@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Dungeonator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace LichItems.ItemAPI
 {
     public class AdvancedTransformGunSynergyProcessor : MonoBehaviour
     {
-
         private void Awake()
         {
-            this.m_gun = base.GetComponent<Gun>();
+            m_gun = base.GetComponent<Gun>();
         }
 
         private void Update()
@@ -19,21 +20,21 @@ namespace LichItems.ItemAPI
             {
                 return;
             }
-            if (this.m_gun && this.m_gun.CurrentOwner is PlayerController)
+            if (m_gun && m_gun.CurrentOwner is PlayerController)
             {
-                PlayerController playerController = this.m_gun.CurrentOwner as PlayerController;
-                if (!this.m_gun.enabled)
+                PlayerController playerController = m_gun.CurrentOwner as PlayerController;
+                if (!m_gun.enabled)
                 {
                     return;
                 }
-                if (LichsBookItem.PlayerHasActiveSynergy(playerController, this.SynergyToCheck) && !this.m_transformed)
+                if (LichsBookItem.PlayerHasActiveSynergy(playerController, SynergyToCheck) && !m_transformed)
                 {
-                    this.m_transformed = true;
-                    this.m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(this.SynergyGunId) as Gun);
-                    AdvancedGunBehaviour synergyBehaviour = PickupObjectDatabase.GetById(this.SynergyGunId).GetComponent<AdvancedGunBehaviour>();
+                    m_transformed = true;
+                    m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(SynergyGunId) as Gun);
+                    AdvancedGunBehaviour synergyBehaviour = PickupObjectDatabase.GetById(SynergyGunId).GetComponent<AdvancedGunBehaviour>();
                     if (synergyBehaviour != null)
                     {
-                        AdvancedGunBehaviour behav = this.gameObject.GetOrAddComponent<AdvancedGunBehaviour>();
+                        AdvancedGunBehaviour behav = gameObject.GetOrAddComponent<AdvancedGunBehaviour>();
                         behav.preventNormalFireAudio = synergyBehaviour.preventNormalFireAudio;
                         behav.preventNormalReloadAudio = synergyBehaviour.preventNormalReloadAudio;
                         behav.overrideNormalFireAudio = synergyBehaviour.overrideNormalFireAudio;
@@ -44,24 +45,24 @@ namespace LichItems.ItemAPI
                     }
                     else
                     {
-                        if (this.GetComponent<AdvancedGunBehaviour>() != null)
+                        if (GetComponent<AdvancedGunBehaviour>() != null)
                         {
-                            Destroy(this.GetComponent<AdvancedGunBehaviour>());
+                            Destroy(GetComponent<AdvancedGunBehaviour>());
                         }
                     }
-                    if (this.ShouldResetAmmoAfterTransformation)
+                    if (ShouldResetAmmoAfterTransformation)
                     {
-                        this.m_gun.ammo = this.ResetAmmoCount;
+                        m_gun.ammo = ResetAmmoCount;
                     }
                 }
-                else if (!LichsBookItem.PlayerHasActiveSynergy(playerController, this.SynergyToCheck) && this.m_transformed)
+                else if (!LichsBookItem.PlayerHasActiveSynergy(playerController, SynergyToCheck) && m_transformed)
                 {
-                    this.m_transformed = false;
-                    this.m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(this.NonSynergyGunId) as Gun);
-                    AdvancedGunBehaviour normalBehaviour = PickupObjectDatabase.GetById(this.NonSynergyGunId).GetComponent<AdvancedGunBehaviour>();
+                    m_transformed = false;
+                    m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(NonSynergyGunId) as Gun);
+                    AdvancedGunBehaviour normalBehaviour = PickupObjectDatabase.GetById(NonSynergyGunId).GetComponent<AdvancedGunBehaviour>();
                     if (normalBehaviour != null)
                     {
-                        AdvancedGunBehaviour behav = this.gameObject.GetOrAddComponent<AdvancedGunBehaviour>();
+                        AdvancedGunBehaviour behav = gameObject.GetOrAddComponent<AdvancedGunBehaviour>();
                         behav.preventNormalFireAudio = normalBehaviour.preventNormalFireAudio;
                         behav.preventNormalReloadAudio = normalBehaviour.preventNormalReloadAudio;
                         behav.overrideNormalFireAudio = normalBehaviour.overrideNormalFireAudio;
@@ -72,27 +73,27 @@ namespace LichItems.ItemAPI
                     }
                     else
                     {
-                        if (this.GetComponent<AdvancedGunBehaviour>() != null)
+                        if (GetComponent<AdvancedGunBehaviour>() != null)
                         {
-                            Destroy(this.GetComponent<AdvancedGunBehaviour>());
+                            Destroy(GetComponent<AdvancedGunBehaviour>());
                         }
                     }
-                    if (this.ShouldResetAmmoAfterTransformation)
+                    if (ShouldResetAmmoAfterTransformation)
                     {
-                        this.m_gun.ammo = this.ResetAmmoCount;
+                        m_gun.ammo = ResetAmmoCount;
                     }
                 }
             }
-            else if (this.m_gun && !this.m_gun.CurrentOwner && this.m_transformed)
+            else if (m_gun && !m_gun.CurrentOwner && m_transformed)
             {
-                this.m_transformed = false;
-                this.m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(this.NonSynergyGunId) as Gun);
-                if (this.ShouldResetAmmoAfterTransformation)
+                m_transformed = false;
+                m_gun.TransformToTargetGun(PickupObjectDatabase.GetById(NonSynergyGunId) as Gun);
+                if (ShouldResetAmmoAfterTransformation)
                 {
-                    this.m_gun.ammo = this.ResetAmmoCount;
+                    m_gun.ammo = ResetAmmoCount;
                 }
             }
-            this.ShouldResetAmmoAfterTransformation = false;
+            ShouldResetAmmoAfterTransformation = false;
         }
 
         public string SynergyToCheck;

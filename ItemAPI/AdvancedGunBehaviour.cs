@@ -15,48 +15,48 @@ namespace LichItems
         /// </summary>
         protected virtual void Update()
         {
-            if (this.Player != null)
+            if (Player != null)
             {
-                if (!this.everPickedUpByPlayer)
+                if (!everPickedUpByPlayer)
                 {
-                    this.everPickedUpByPlayer = true;
+                    everPickedUpByPlayer = true;
                 }
             }
-            if (this.Owner != null)
+            if (Owner != null)
             {
-                if (!this.everPickedUp)
+                if (!everPickedUp)
                 {
-                    this.everPickedUp = true;
+                    everPickedUp = true;
                 }
             }
-            if (this.Owner != null && !this.pickedUpLast)
+            if (Owner != null && !pickedUpLast)
             {
-                this.OnPickup(this.Owner);
-                this.pickedUpLast = true;
+                OnPickup(Owner);
+                pickedUpLast = true;
             }
-            if (this.Owner == null && this.pickedUpLast)
+            if (Owner == null && pickedUpLast)
             {
-                if (this.lastOwner != null)
+                if (lastOwner != null)
                 {
-                    this.OnPostDrop(this.lastOwner);
-                    this.lastOwner = null;
+                    OnPostDrop(lastOwner);
+                    lastOwner = null;
                 }
-                this.pickedUpLast = false;
+                pickedUpLast = false;
             }
-            if (this.lastOwner != this.Owner)
+            if (lastOwner != Owner)
             {
-                this.lastOwner = this.Owner;
+                lastOwner = Owner;
             }
-            if (this.gun != null && !this.gun.IsReloading && !this.hasReloaded)
+            if (gun != null && !gun.IsReloading && !hasReloaded)
             {
-                this.hasReloaded = true;
-                if (this.Owner != null)
+                hasReloaded = true;
+                if (Owner != null)
                 {
-                    this.OnReloadEnded(this.Owner as PlayerController, this.gun);
+                    OnReloadEnded(Owner as PlayerController, gun);
                 }
             }
-            this.gun.PreventNormalFireAudio = this.preventNormalFireAudio;
-            this.gun.OverrideNormalFireAudioEvent = this.overrideNormalFireAudio;
+            gun.PreventNormalFireAudio = preventNormalFireAudio;
+            gun.OverrideNormalFireAudioEvent = overrideNormalFireAudio;
         }
 
         /// <summary>
@@ -68,15 +68,15 @@ namespace LichItems
             AdvancedGunBehaviour component = source.GetComponent<AdvancedGunBehaviour>();
             if (component != null)
             {
-                this.preventNormalFireAudio = component.preventNormalFireAudio;
-                this.preventNormalReloadAudio = component.preventNormalReloadAudio;
-                this.overrideNormalReloadAudio = component.overrideNormalReloadAudio;
-                this.overrideNormalFireAudio = component.overrideNormalFireAudio;
-                this.everPickedUpByPlayer = component.everPickedUpByPlayer;
-                this.everPickedUp = component.everPickedUp;
-                this.usesOverrideHeroSwordCooldown = component.usesOverrideHeroSwordCooldown;
-                this.overrideHeroSwordCooldown = component.overrideHeroSwordCooldown;
-                this.overrideReloadSwitchGroup = component.overrideReloadSwitchGroup;
+                preventNormalFireAudio = component.preventNormalFireAudio;
+                preventNormalReloadAudio = component.preventNormalReloadAudio;
+                overrideNormalReloadAudio = component.overrideNormalReloadAudio;
+                overrideNormalFireAudio = component.overrideNormalFireAudio;
+                everPickedUpByPlayer = component.everPickedUpByPlayer;
+                everPickedUp = component.everPickedUp;
+                usesOverrideHeroSwordCooldown = component.usesOverrideHeroSwordCooldown;
+                overrideHeroSwordCooldown = component.overrideHeroSwordCooldown;
+                overrideReloadSwitchGroup = component.overrideReloadSwitchGroup;
             }
         }
 
@@ -113,15 +113,15 @@ namespace LichItems
         /// <param name="dataIndex">DataIndex. You don't need to use this argument.</param>
         public virtual void MidGameSerialize(List<object> data, int dataIndex)
         {
-            data.Add(this.preventNormalFireAudio);
-            data.Add(this.preventNormalReloadAudio);
-            data.Add(this.overrideNormalReloadAudio);
-            data.Add(this.overrideNormalFireAudio);
-            data.Add(this.everPickedUpByPlayer);
-            data.Add(this.everPickedUp);
-            data.Add(this.usesOverrideHeroSwordCooldown);
-            data.Add(this.overrideHeroSwordCooldown);
-            data.Add(this.overrideReloadSwitchGroup);
+            data.Add(preventNormalFireAudio);
+            data.Add(preventNormalReloadAudio);
+            data.Add(overrideNormalReloadAudio);
+            data.Add(overrideNormalFireAudio);
+            data.Add(everPickedUpByPlayer);
+            data.Add(everPickedUp);
+            data.Add(usesOverrideHeroSwordCooldown);
+            data.Add(overrideHeroSwordCooldown);
+            data.Add(overrideReloadSwitchGroup);
         }
 
         /// <summary>
@@ -131,15 +131,15 @@ namespace LichItems
         /// <param name="dataIndex">DataIndex. Add a number equal to the amount of your data to it.</param>
         public virtual void MidGameDeserialize(List<object> data, ref int dataIndex)
         {
-            this.preventNormalFireAudio = (bool)data[dataIndex];
-            this.preventNormalReloadAudio = (bool)data[dataIndex + 1];
-            this.overrideNormalReloadAudio = (string)data[dataIndex + 2];
-            this.overrideNormalFireAudio = (string)data[dataIndex + 3];
-            this.everPickedUpByPlayer = (bool)data[dataIndex + 4];
-            this.everPickedUp = (bool)data[dataIndex + 5];
-            this.usesOverrideHeroSwordCooldown = (bool)data[dataIndex + 6];
-            this.overrideHeroSwordCooldown = (float)data[dataIndex + 7];
-            this.overrideReloadSwitchGroup = (string)data[dataIndex + 8];
+            preventNormalFireAudio = (bool)data[dataIndex];
+            preventNormalReloadAudio = (bool)data[dataIndex + 1];
+            overrideNormalReloadAudio = (string)data[dataIndex + 2];
+            overrideNormalFireAudio = (string)data[dataIndex + 3];
+            everPickedUpByPlayer = (bool)data[dataIndex + 4];
+            everPickedUp = (bool)data[dataIndex + 5];
+            usesOverrideHeroSwordCooldown = (bool)data[dataIndex + 6];
+            overrideHeroSwordCooldown = (float)data[dataIndex + 7];
+            overrideReloadSwitchGroup = (string)data[dataIndex + 8];
             dataIndex += 9;
         }
 
@@ -148,23 +148,23 @@ namespace LichItems
         /// </summary>
         public virtual void Start()
         {
-            this.gun = base.GetComponent<Gun>();
-            this.gun.OnInitializedWithOwner += this.OnInitializedWithOwner;
-            if (this.gun.CurrentOwner != null)
+            gun = base.GetComponent<Gun>();
+            gun.OnInitializedWithOwner += OnInitializedWithOwner;
+            if (gun.CurrentOwner != null)
             {
-                this.OnInitializedWithOwner(this.gun.CurrentOwner);
+                OnInitializedWithOwner(gun.CurrentOwner);
             }
-            this.gun.PostProcessProjectile += this.PostProcessProjectile;
-            this.gun.PostProcessVolley += this.PostProcessVolley;
-            this.gun.OnDropped += this.OnDropped;
-            this.gun.OnAutoReload += this.OnAutoReload;
-            this.gun.OnReloadPressed += this.OnReloadPressed;
-            this.gun.OnFinishAttack += this.OnFinishAttack;
-            this.gun.OnPostFired += this.OnPostFired;
-            this.gun.OnAmmoChanged += this.OnAmmoChanged;
-            this.gun.OnBurstContinued += this.OnBurstContinued;
-            this.gun.OnPreFireProjectileModifier += this.OnPreFireProjectileModifier;
-            base.StartCoroutine(this.UpdateCR());
+            gun.PostProcessProjectile += PostProcessProjectile;
+            gun.PostProcessVolley += PostProcessVolley;
+            gun.OnDropped += OnDropped;
+            gun.OnAutoReload += OnAutoReload;
+            gun.OnReloadPressed += OnReloadPressed;
+            gun.OnFinishAttack += OnFinishAttack;
+            gun.OnPostFired += OnPostFired;
+            gun.OnAmmoChanged += OnAmmoChanged;
+            gun.OnBurstContinued += OnBurstContinued;
+            gun.OnPreFireProjectileModifier += OnPreFireProjectileModifier;
+            base.StartCoroutine(UpdateCR());
         }
 
         public virtual void BraveOnLevelWasLoaded()
@@ -175,7 +175,7 @@ namespace LichItems
         {
             while (true)
             {
-                this.NonCurrentGunUpdate();
+                NonCurrentGunUpdate();
                 yield return null;
             }
         }
@@ -227,7 +227,7 @@ namespace LichItems
         {
             if (player != null)
             {
-                this.OnAutoReloadSafe(player, gun);
+                OnAutoReloadSafe(player, gun);
             }
         }
 
@@ -248,14 +248,14 @@ namespace LichItems
         /// <param name="manualReload">True if the owner reloaded the gun by pressing the reload key. False if the owner reloaded the gun by firing with an empty clip.</param>
         public virtual void OnReloadPressed(PlayerController player, Gun gun, bool manualReload)
         {
-            if (this.hasReloaded && gun.IsReloading)
+            if (hasReloaded && gun.IsReloading)
             {
-                this.OnReload(player, gun);
-                this.hasReloaded = false;
+                OnReload(player, gun);
+                hasReloaded = false;
             }
             if (player != null)
             {
-                this.OnReloadPressedSafe(player, gun, manualReload);
+                OnReloadPressedSafe(player, gun, manualReload);
             }
         }
 
@@ -267,13 +267,13 @@ namespace LichItems
         /// <param name="newGun">True if the gun was changed because player picked up a new gun.</param>
         public virtual void OnGunsChanged(Gun previous, Gun current, bool newGun)
         {
-            if (previous != this.gun && current == this.gun)
+            if (previous != gun && current == gun)
             {
-                this.OnSwitchedToThisGun();
+                OnSwitchedToThisGun();
             }
-            if (previous == this.gun && current != this.gun)
+            if (previous == gun && current != gun)
             {
-                this.OnSwitchedAwayFromThisGun();
+                OnSwitchedAwayFromThisGun();
             }
         }
 
@@ -299,10 +299,10 @@ namespace LichItems
         /// <param name="manualReload">True if the owner reloaded the gun by pressing the reload key. False if the owner reloaded the gun by firing with an empty clip.</param>
         public virtual void OnReloadPressedSafe(PlayerController player, Gun gun, bool manualReload)
         {
-            if (this.hasReloaded && gun.IsReloading)
+            if (hasReloaded && gun.IsReloading)
             {
-                this.OnReloadSafe(player, gun);
-                this.hasReloaded = false;
+                OnReloadSafe(player, gun);
+                hasReloaded = false;
             }
         }
 
@@ -332,7 +332,7 @@ namespace LichItems
         {
             if (player != null)
             {
-                this.OnReloadEndedSafe(player, gun);
+                OnReloadEndedSafe(player, gun);
             }
         }
 
@@ -373,9 +373,9 @@ namespace LichItems
         {
             if (gun.IsHeroSword)
             {
-                if (this.HeroSwordCooldown == 0.5f)
+                if (HeroSwordCooldown == 0.5f)
                 {
-                    this.OnHeroSwordCooldownStarted(player, gun);
+                    OnHeroSwordCooldownStarted(player, gun);
                 }
             }
         }
@@ -387,9 +387,9 @@ namespace LichItems
         /// <param name="gun"></param>
         public virtual void OnHeroSwordCooldownStarted(PlayerController player, Gun gun)
         {
-            if (this.usesOverrideHeroSwordCooldown)
+            if (usesOverrideHeroSwordCooldown)
             {
-                this.HeroSwordCooldown = this.overrideHeroSwordCooldown;
+                HeroSwordCooldown = overrideHeroSwordCooldown;
             }
         }
 
@@ -402,7 +402,7 @@ namespace LichItems
         {
             if (player != null)
             {
-                this.OnAmmoChangedSafe(player, gun);
+                OnAmmoChangedSafe(player, gun);
             }
         }
 
@@ -424,7 +424,7 @@ namespace LichItems
         {
             if (player != null)
             {
-                this.OnBurstContinuedSafe(player, gun);
+                OnBurstContinuedSafe(player, gun);
             }
         }
 
@@ -461,11 +461,11 @@ namespace LichItems
         {
             if (owner is PlayerController)
             {
-                this.OnPickedUpByPlayer(owner as PlayerController);
+                OnPickedUpByPlayer(owner as PlayerController);
             }
             if (owner is AIActor)
             {
-                this.OnPickedUpByEnemy(owner as AIActor);
+                OnPickedUpByEnemy(owner as AIActor);
             }
         }
 
@@ -477,11 +477,11 @@ namespace LichItems
         {
             if (owner is PlayerController)
             {
-                this.OnPostDroppedByPlayer(owner as PlayerController);
+                OnPostDroppedByPlayer(owner as PlayerController);
             }
             if (owner is AIActor)
             {
-                this.OnPostDroppedByEnemy(owner as AIActor);
+                OnPostDroppedByEnemy(owner as AIActor);
             }
         }
 
@@ -491,7 +491,7 @@ namespace LichItems
         /// <param name="player">The player that picked up the gun.</param>
         protected virtual void OnPickedUpByPlayer(PlayerController player)
         {
-            player.GunChanged += this.OnGunsChanged;
+            player.GunChanged += OnGunsChanged;
         }
 
         /// <summary>
@@ -525,7 +525,7 @@ namespace LichItems
         {
             get
             {
-                return this.gun.CurrentOwner != null;
+                return gun.CurrentOwner != null;
             }
         }
 
@@ -536,9 +536,9 @@ namespace LichItems
         {
             get
             {
-                if (this.gun.CurrentOwner is PlayerController)
+                if (gun.CurrentOwner is PlayerController)
                 {
-                    return this.gun.CurrentOwner as PlayerController;
+                    return gun.CurrentOwner as PlayerController;
                 }
                 return null;
             }
@@ -551,17 +551,17 @@ namespace LichItems
         {
             get
             {
-                if (this.gun != null)
+                if (gun != null)
                 {
-                    return (float)heroSwordCooldown.GetValue(this.gun);
+                    return (float)heroSwordCooldown.GetValue(gun);
                 }
                 return -1f;
             }
             set
             {
-                if (this.gun != null)
+                if (gun != null)
                 {
-                    heroSwordCooldown.SetValue(this.gun, value);
+                    heroSwordCooldown.SetValue(gun, value);
                 }
             }
         }
@@ -573,7 +573,7 @@ namespace LichItems
         {
             get
             {
-                return this.gun.CurrentOwner;
+                return gun.CurrentOwner;
             }
         }
 
@@ -584,7 +584,7 @@ namespace LichItems
         {
             get
             {
-                return this.Player != null;
+                return Player != null;
             }
         }
 

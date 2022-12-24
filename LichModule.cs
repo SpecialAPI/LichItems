@@ -24,22 +24,8 @@ namespace LichItems
             CrossChamber.Init();
             LichsBookItem.Init();
             LichsGun.Init();
-            CustomSynergies.Add("Master of Gungeon", new List<string> { "spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets" });
-            CustomSynergies.Add("Bullet = peace", new List<string> { "spapi:cross_chamber", "magnum" });
-            Hook getNicknamehook = new Hook(
-                    typeof(StringTableManager).GetMethod("GetTalkingPlayerNick", BindingFlags.NonPublic | BindingFlags.Static),
-                    typeof(LichModule).GetMethod("GetTalkingPlayerNickHook")
-                );
-
-            Hook getNamehook = new Hook(
-                typeof(StringTableManager).GetMethod("GetTalkingPlayerName", BindingFlags.NonPublic | BindingFlags.Static),
-                typeof(LichModule).GetMethod("GetTalkingPlayerNameHook")
-            );
-
-            Hook getValueHook = new Hook(
-                typeof(dfLanguageManager).GetMethod("GetValue", BindingFlags.Public | BindingFlags.Instance),
-                typeof(LichModule).GetMethod("GetValueHook")
-            );
+            CustomSynergies.Add("Master of the Gungeon", new List<string> { "spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets" });
+            CustomSynergies.Add("Crossfire", new List<string> { "spapi:cross_chamber", "magnum" });
             AdvancedGunBehaviour.Setup();
             ETGMod.StartGlobalCoroutine(DelayedStartCR());
         }

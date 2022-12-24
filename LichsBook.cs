@@ -12,17 +12,17 @@ namespace LichItems
 	{
 		public LichsBook()
 		{
-			this.Duration = 8f;
-			this.Radius = 5f;
+			Duration = 8f;
+			Radius = 5f;
 		}
 
 		public IEnumerator Start()
 		{
-			this.HandleRadialIndicator();
-			Instantiate(this.shadowPrefab, base.transform.position - base.GetComponent<tk2dBaseSprite>().GetRelativePositionFromAnchor(tk2dBaseSprite.Anchor.UpperCenter).WithX(0).ToVector3ZUp(0) + new Vector3(0f, 0.1875f), Quaternion.identity,
-				this.transform);
-			yield return new WaitForSeconds(this.Duration);
-			Destroy(this.gameObject);
+			HandleRadialIndicator();
+			Instantiate(shadowPrefab, transform.position - GetComponent<tk2dBaseSprite>().GetRelativePositionFromAnchor(tk2dBaseSprite.Anchor.UpperCenter).WithX(0).ToVector3ZUp(0) + new Vector3(0f, 0.1875f), Quaternion.identity,
+				transform);
+			yield return new WaitForSeconds(Duration);
+			Destroy(gameObject);
 			yield break;
 		}
 
@@ -35,29 +35,29 @@ namespace LichItems
 			for (int i = 0; i < GameManager.Instance.AllPlayers.Length; i++)
 			{
 				PlayerController playerController = GameManager.Instance.AllPlayers[i];
-				float num = this.Radius;
-				bool hasStat = this.statModifiers.ContainsKey(playerController);
-				if (playerController && Vector2.Distance(playerController.CenterPosition, base.transform.position.XY()) < num)
+				float num = Radius;
+				bool hasStat = statModifiers.ContainsKey(playerController);
+				if (playerController && Vector2.Distance(playerController.CenterPosition, transform.position.XY()) < num)
 				{
 					if (!hasStat)
 					{
 						StatModifier mod = StatModifier.Create(PlayerStats.StatType.ReloadSpeed, StatModifier.ModifyMethod.ADDITIVE, -1000f);
 						playerController.ownerlessStatModifiers.Add(mod);
 						playerController.stats.RecalculateStats(playerController, true, false);
-						this.statModifiers.Add(playerController, mod);
+						statModifiers.Add(playerController, mod);
 					}
 				}
 				else if (playerController)
 				{
 					if (hasStat)
 					{
-						StatModifier mod = this.statModifiers[playerController];
+						StatModifier mod = statModifiers[playerController];
 						if (playerController.ownerlessStatModifiers.Contains(mod))
 						{
 							playerController.ownerlessStatModifiers.Remove(mod);
 							playerController.stats.RecalculateStats(playerController, true, false);
 						}
-						this.statModifiers.Remove(playerController);
+						statModifiers.Remove(playerController);
 					}
 				}
 			}
@@ -70,45 +70,45 @@ namespace LichItems
 				PlayerController playerController = GameManager.Instance.AllPlayers[i];
 				if (playerController)
 				{
-					bool hasStat = this.statModifiers.ContainsKey(playerController);
+					bool hasStat = statModifiers.ContainsKey(playerController);
 					if (hasStat)
 					{
-						StatModifier mod = this.statModifiers[playerController];
+						StatModifier mod = statModifiers[playerController];
 						if (playerController.ownerlessStatModifiers.Contains(mod))
 						{
 							playerController.ownerlessStatModifiers.Remove(mod);
 							playerController.stats.RecalculateStats(playerController, true, false);
 						}
-						this.statModifiers.Remove(playerController);
+						statModifiers.Remove(playerController);
 					}
 				}
 			}
-			this.UnhandleRadialIndicator();
+			UnhandleRadialIndicator();
 		}
 
 		private void HandleRadialIndicator()
 		{
-			if (!this.m_radialIndicatorActive)
+			if (!m_radialIndicatorActive)
 			{
-				this.m_radialIndicatorActive = true;
-				this.m_radialIndicator = ((GameObject)Instantiate(ResourceCache.Acquire("Global VFX/HeatIndicator"), base.transform.position, Quaternion.identity, base.transform)).GetComponent<HeatIndicatorController>();
-				this.m_radialIndicator.CurrentColor = Color.white;
-				this.m_radialIndicator.IsFire = false;
-				float num = this.Radius;
-				this.m_radialIndicator.CurrentRadius = num;
+				m_radialIndicatorActive = true;
+				m_radialIndicator = ((GameObject)Instantiate(ResourceCache.Acquire("Global VFX/HeatIndicator"), base.transform.position, Quaternion.identity, base.transform)).GetComponent<HeatIndicatorController>();
+				m_radialIndicator.CurrentColor = Color.white;
+				m_radialIndicator.IsFire = false;
+				float num = Radius;
+				m_radialIndicator.CurrentRadius = num;
 			}
 		}
 
 		private void UnhandleRadialIndicator()
 		{
-			if (this.m_radialIndicatorActive)
+			if (m_radialIndicatorActive)
 			{
-				this.m_radialIndicatorActive = false;
-				if (this.m_radialIndicator)
+				m_radialIndicatorActive = false;
+				if (m_radialIndicator)
 				{
-					this.m_radialIndicator.EndEffect();
+					m_radialIndicator.EndEffect();
 				}
-				this.m_radialIndicator = null;
+				m_radialIndicator = null;
 			}
 		}
 

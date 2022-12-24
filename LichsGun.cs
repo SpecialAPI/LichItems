@@ -7,6 +7,7 @@ using UnityEngine;
 using LichItems.ItemAPI;
 using Dungeonator;
 
+
 namespace LichItems
 {
     class LichsGun
@@ -15,7 +16,7 @@ namespace LichItems
         {
             Gun gun = ETGMod.Databases.Items.NewGun("Lich's Gun", "lichsgun");
             Game.Items.Rename("outdated_gun_mods:lich's_gun", "spapi:lichs_gun");
-            GunExt.SetShortDescription(gun, "Bullet Dance");
+            GunExt.SetShortDescription(gun, "The Freeshooter");
             GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
             GunExt.SetupSprite(gun, null, "lichsgun_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
@@ -110,7 +111,7 @@ namespace LichItems
             gun.muzzleFlashEffects = muzzleFlashVfx;
             gun.reloadTime = 1.1f;
             gun.SetBaseMaxAmmo(350);
-            gun.quality = PickupObject.ItemQuality.D;
+            gun.quality = PickupObject.ItemQuality.SPECIAL;
             gun.barrelOffset.transform.localPosition = new Vector3(1.1875f, 0.5625f, 0f);
             gun.gunClass = GunClass.PISTOL;
             ETGMod.Databases.Items.Add(gun, null, "ANY");
@@ -297,50 +298,38 @@ namespace LichItems
         {
             Gun gun = ETGMod.Databases.Items.NewGun("Synergy Lich's Gun", "lichsgun2");
             Game.Items.Rename("outdated_gun_mods:synergy_lich's_gun", "spapi:lichs_gun+master_of_the_gungeon");
-            GunExt.SetShortDescription(gun, "Bullet Dance");
+            GunExt.SetShortDescription(gun, "The Freeshooter");
             GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
             GunExt.SetupSprite(gun, null, "lichsgun2_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
-            gun.DefaultModule.shootStyle = ProjectileModule.ShootStyle.SemiAutomatic;
+            gun.DefaultModule.shootStyle = ProjectileModule.ShootStyle.Burst;
             gun.DefaultModule.angleVariance = 0;
+            gun.DefaultModule.burstShotCount = 17;
+            gun.DefaultModule.burstCooldownTime = 0.06f;
             gun.DefaultModule.ammoType = GameUIAmmoType.AmmoType.MEDIUM_BULLET;
             InputGuidedProjectile projectile = CopyFields<InputGuidedProjectile>(UnityEngine.Object.Instantiate((PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]));
-            projectile.trackingSpeed = 500f;
             projectile.dumbfireTime = -1f;
             projectile.gameObject.SetActive(false);
             FakePrefab.MarkAsFakePrefab(projectile.gameObject);
             UnityEngine.Object.DontDestroyOnLoad(projectile);
             gun.DefaultModule.projectiles[0] = projectile;
-            projectile.baseData.damage = 8f;
+            projectile.baseData.damage = 3f;
             projectile.shouldRotate = true;
             projectile.name = "LichsGun2_Projectile";
-            projectile.baseData.range = 40f;
-            projectile.baseData.speed = 22f;
+            projectile.baseData.range = 100f;
+            projectile.baseData.speed = 14f;
             SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.reloadClipLaunchFrame = 0;
             gun.DefaultModule.cooldownTime = 0.1f;
-            gun.DefaultModule.numberOfShotsInClip = 17; 
+            gun.DefaultModule.numberOfShotsInClip = 17;
+            gun.doesScreenShake = false;
             AdvancedGunBehaviour behav = gun.gameObject.AddComponent<AdvancedGunBehaviour>();
-            behav.preventNormalFireAudio = true;
-            behav.overrideNormalFireAudio = "Play_WPN_thompson_shot_01";
-            for (int i = 0; i < gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames.Length; i++)
-            {
-                gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames[i].triggerEvent = true;
-                tk2dSpriteDefinition def = gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames[i].spriteCollection.spriteDefinitions[gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.shootAnimation).frames[i].spriteId];
-                Vector2 offset = new Vector2(((float)synergyFireOffsets[i].x) / 16f, ((float)synergyFireOffsets[i].y) / 16f);
-                LichsBookItem.MakeOffset(def, offset);
-            }
-            for (int i = 0; i < gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.reloadAnimation).frames.Length; i++)
-            {
-                gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.reloadAnimation).frames[i].triggerEvent = true;
-                tk2dSpriteDefinition def = gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.reloadAnimation).frames[i].spriteCollection.spriteDefinitions[gun.GetComponent<tk2dSpriteAnimator>().GetClipByName(gun.reloadAnimation).frames[i].spriteId];
-                Vector2 offset = new Vector2(((float)synergyReloadOffsets[i].x) / 16f, ((float)synergyReloadOffsets[i].y) / 16f);
-                LichsBookItem.MakeOffset(def, offset);
-            }
-            gun.gunSwitchGroup = "Colt1851";
+            behav.preventNormalReloadAudio = true;
+            behav.overrideNormalReloadAudio = "Play_BOSS_lichC_morph_01";
+            gun.gunSwitchGroup = "Hammer";
             gun.gunHandedness = GunHandedness.HiddenOneHanded;
-            gun.muzzleFlashEffects = new VFXPool() { type = VFXPoolType.None };
+            gun.muzzleFlashEffects = new VFXPool() { type = VFXPoolType.None, effects = new VFXComplex[0] };
             gun.reloadTime = 1.1f;
             gun.SetBaseMaxAmmo(700);
             gun.quality = PickupObject.ItemQuality.EXCLUDED;
@@ -350,7 +339,7 @@ namespace LichItems
             AdvancedTransformGunSynergyProcessor processor = original.gameObject.AddComponent<AdvancedTransformGunSynergyProcessor>();
             processor.NonSynergyGunId = original.PickupObjectId;
             processor.SynergyGunId = gun.PickupObjectId;
-            processor.SynergyToCheck = "Master of Gungeon";
+            processor.SynergyToCheck = "Master of the Gungeon";
         }
 
         public static tk2dSpriteCollectionData VFXCollection

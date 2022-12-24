@@ -22,7 +22,7 @@ namespace LichItems
                 GameObject obj = new GameObject(itemName);
                 var item = obj.AddComponent<AdvancedCompanionItem>();
                 ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
-                string shortDesc = "Baby Tombstoner";
+                string shortDesc = "Marbled Minion";
                 string longDesc = "A relic that summons a Lich personal guard.";
                 ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
                 item.quality = PickupObject.ItemQuality.SPECIAL;
@@ -36,7 +36,7 @@ namespace LichItems
                     {
                       SynergyCompanionGuid = "Synergy_Cross_Chamber",
                       UseStringSynergyDetectionInstead = true,
-                      RequiredStringSynergy = "Bullet = peace"
+                      RequiredStringSynergy = "Crossfire"
                     }
                 };
                 BuildPrefab();
@@ -266,7 +266,7 @@ namespace LichItems
             {
                 base.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyHitBox));
                 base.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
-                base.healthHaver.OnDamaged += this.HandleDamaged;
+                base.healthHaver.OnDamaged += HandleDamaged;
             }
 
             private void HandleDamaged(float resultValue, float maxValue, CoreDamageTypes damageTypes, DamageCategory damageCategory, Vector2 damageDirection)

@@ -17,49 +17,49 @@ namespace LichItems
     {
         public AdvancedCompanionItem()
         {
-            this.SacrificeGunDuration = 30f;
-            this.m_lastActiveSynergyTransformation = -1;
+            SacrificeGunDuration = 30f;
+            m_lastActiveSynergyTransformation = -1;
         }
         private void CreateCompanion(PlayerController owner)
         {
-            if (this.PreventRespawnOnFloorLoad)
+            if (PreventRespawnOnFloorLoad)
             {
                 return;
             }
-            if (this.BabyGoodMimicOrbitalOverridden)
+            if (BabyGoodMimicOrbitalOverridden)
             {
-                GameObject extantCompanion = PlayerOrbitalItem.CreateOrbital(owner, (!this.OverridePlayerOrbitalItem.OrbitalFollowerPrefab) ? this.OverridePlayerOrbitalItem.OrbitalPrefab.gameObject : this.OverridePlayerOrbitalItem.OrbitalFollowerPrefab.gameObject, this.OverridePlayerOrbitalItem.OrbitalFollowerPrefab, null);
-                this.SetExtantCompanion(extantCompanion);
+                GameObject extantCompanion = PlayerOrbitalItem.CreateOrbital(owner, (!OverridePlayerOrbitalItem.OrbitalFollowerPrefab) ? OverridePlayerOrbitalItem.OrbitalPrefab.gameObject : OverridePlayerOrbitalItem.OrbitalFollowerPrefab.gameObject, OverridePlayerOrbitalItem.OrbitalFollowerPrefab, null);
+                SetExtantCompanion(extantCompanion);
                 return;
             }
-            string guid = this.CompanionGuid;
-            this.m_lastActiveSynergyTransformation = -1;
-            if (this.UsesAlternatePastPrefab && GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST)
+            string guid = CompanionGuid;
+            m_lastActiveSynergyTransformation = -1;
+            if (UsesAlternatePastPrefab && GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST)
             {
-                guid = this.CompanionPastGuid;
+                guid = CompanionPastGuid;
             }
             else
             {
-                if (this.UseAdvancedSynergies && this.AdvancedSynergies.Length > 0)
+                if (UseAdvancedSynergies && AdvancedSynergies.Length > 0)
                 {
-                    for (int i = 0; i < this.AdvancedSynergies.Length; i++)
+                    for (int i = 0; i < AdvancedSynergies.Length; i++)
                     {
-                        if ((this.AdvancedSynergies[i].UseStringSynergyDetectionInstead && LichsBookItem.PlayerHasActiveSynergy(this.m_owner, this.AdvancedSynergies[i].RequiredStringSynergy)) || (!this.AdvancedSynergies[i].UseStringSynergyDetectionInstead &&
-                            owner.HasActiveBonusSynergy(this.AdvancedSynergies[i].RequiredSynergy, false)))
+                        if ((AdvancedSynergies[i].UseStringSynergyDetectionInstead && LichsBookItem.PlayerHasActiveSynergy(m_owner, AdvancedSynergies[i].RequiredStringSynergy)) || (!AdvancedSynergies[i].UseStringSynergyDetectionInstead &&
+                            owner.HasActiveBonusSynergy(AdvancedSynergies[i].RequiredSynergy, false)))
                         {
-                            guid = this.AdvancedSynergies[i].SynergyCompanionGuid;
-                            this.m_lastActiveSynergyTransformation = i;
+                            guid = AdvancedSynergies[i].SynergyCompanionGuid;
+                            m_lastActiveSynergyTransformation = i;
                         }
                     }
                 }
-                else if (this.Synergies.Length > 0)
+                else if (Synergies.Length > 0)
                 {
-                    for (int i = 0; i < this.Synergies.Length; i++)
+                    for (int i = 0; i < Synergies.Length; i++)
                     {
-                        if (owner.HasActiveBonusSynergy(this.Synergies[i].RequiredSynergy, false))
+                        if (owner.HasActiveBonusSynergy(Synergies[i].RequiredSynergy, false))
                         {
-                            guid = this.Synergies[i].SynergyCompanionGuid;
-                            this.m_lastActiveSynergyTransformation = i;
+                            guid = Synergies[i].SynergyCompanionGuid;
+                            m_lastActiveSynergyTransformation = i;
                         }
                     }
                 }
@@ -71,8 +71,8 @@ namespace LichItems
                 vector += new Vector3(1.125f, -0.3125f, 0f);
             }
             GameObject extantCompanion2 = UnityEngine.Object.Instantiate<GameObject>(orLoadByGuid.gameObject, vector, Quaternion.identity);
-            this.SetExtantCompanion(extantCompanion2);
-            CompanionController orAddComponent = this.ExtantCompanion.GetOrAddComponent<CompanionController>();
+            SetExtantCompanion(extantCompanion2);
+            CompanionController orAddComponent = ExtantCompanion.GetOrAddComponent<CompanionController>();
             orAddComponent.Initialize(owner);
             if (orAddComponent.specRigidbody)
             {
@@ -86,40 +86,40 @@ namespace LichItems
 
         private void DestroyCompanion()
         {
-            if (!this.ExtantCompanion)
+            if (!ExtantCompanion)
             {
                 return;
             }
-            Destroy(this.ExtantCompanion);
-            this.SetExtantCompanion(null);
+            Destroy(ExtantCompanion);
+            SetExtantCompanion(null);
         }
 
         public override void Update()
         {
             base.Update();
-            if (!Dungeon.IsGenerating && this.m_owner && this.UseAdvancedSynergies && this.AdvancedSynergies.Length > 0)
+            if (!Dungeon.IsGenerating && m_owner && UseAdvancedSynergies && AdvancedSynergies.Length > 0)
             {
-                if (!this.UsesAlternatePastPrefab || GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.CHARACTER_PAST)
+                if (!UsesAlternatePastPrefab || GameManager.Instance.CurrentLevelOverrideState != GameManager.LevelOverrideState.CHARACTER_PAST)
                 {
                     bool flag = false;
-                    for (int i = this.AdvancedSynergies.Length - 1; i >= 0; i--)
+                    for (int i = AdvancedSynergies.Length - 1; i >= 0; i--)
                     {
-                        if ((this.AdvancedSynergies[i].UseStringSynergyDetectionInstead && LichsBookItem.PlayerHasActiveSynergy(this.m_owner, this.AdvancedSynergies[i].RequiredStringSynergy)) || (!this.AdvancedSynergies[i].UseStringSynergyDetectionInstead &&
-                            this.m_owner.HasActiveBonusSynergy(this.AdvancedSynergies[i].RequiredSynergy, false)))
+                        if ((AdvancedSynergies[i].UseStringSynergyDetectionInstead && LichsBookItem.PlayerHasActiveSynergy(m_owner, AdvancedSynergies[i].RequiredStringSynergy)) || (!AdvancedSynergies[i].UseStringSynergyDetectionInstead &&
+                            m_owner.HasActiveBonusSynergy(AdvancedSynergies[i].RequiredSynergy, false)))
                         {
-                            if (this.m_lastActiveSynergyTransformation != i)
+                            if (m_lastActiveSynergyTransformation != i)
                             {
-                                this.DestroyCompanion();
-                                this.CreateCompanion(this.m_owner);
+                                DestroyCompanion();
+                                CreateCompanion(m_owner);
                             }
                             flag = true;
                             break;
                         }
                     }
-                    if (!flag && this.m_lastActiveSynergyTransformation != -1)
+                    if (!flag && m_lastActiveSynergyTransformation != -1)
                     {
-                        this.DestroyCompanion();
-                        this.CreateCompanion(this.m_owner);
+                        DestroyCompanion();
+                        CreateCompanion(m_owner);
                     }
                 }
             }
@@ -133,35 +133,35 @@ namespace LichItems
         public override void Pickup(PlayerController player)
         {
             base.Pickup(player);
-            this.DestroyCompanion();
-            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Combine(player.OnNewFloorLoaded, new Action<PlayerController>(this.HandleNewFloor));
-            this.CreateCompanion(player);
+            DestroyCompanion();
+            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Combine(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
+            CreateCompanion(player);
         }
 
         private void HandleNewFloor(PlayerController obj)
         {
-            this.DestroyCompanion();
-            if (!this.PreventRespawnOnFloorLoad)
+            DestroyCompanion();
+            if (!PreventRespawnOnFloorLoad)
             {
-                this.CreateCompanion(obj);
+                CreateCompanion(obj);
             }
         }
 
         public override DebrisObject Drop(PlayerController player)
         {
-            this.DestroyCompanion();
-            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(player.OnNewFloorLoaded, new Action<PlayerController>(this.HandleNewFloor));
+            DestroyCompanion();
+            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
             return base.Drop(player);
         }
 
         public override void OnDestroy()
         {
-            if (this.m_owner != null)
+            if (m_owner != null)
             {
-                PlayerController owner = this.m_owner;
-                owner.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(owner.OnNewFloorLoaded, new Action<PlayerController>(this.HandleNewFloor));
+                PlayerController owner = m_owner;
+                owner.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(owner.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
             }
-            this.DestroyCompanion();
+            DestroyCompanion();
             base.OnDestroy();
         }
 
