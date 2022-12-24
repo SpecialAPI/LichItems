@@ -18,9 +18,10 @@ namespace LichItems
         public AdvancedCompanionItem()
         {
             SacrificeGunDuration = 30f;
-            m_lastActiveSynergyTransformation = -1;
+            m_lastActiveAdvancedSynergyTransformation = -1;
         }
-        private void CreateCompanion(PlayerController owner)
+
+        public void CreateCompanionAdvanced(PlayerController owner)
         {
             if (PreventRespawnOnFloorLoad)
             {
@@ -33,7 +34,7 @@ namespace LichItems
                 return;
             }
             string guid = CompanionGuid;
-            m_lastActiveSynergyTransformation = -1;
+            m_lastActiveAdvancedSynergyTransformation = -1;
             if (UsesAlternatePastPrefab && GameManager.Instance.CurrentLevelOverrideState == GameManager.LevelOverrideState.CHARACTER_PAST)
             {
                 guid = CompanionPastGuid;
@@ -48,7 +49,7 @@ namespace LichItems
                             owner.HasActiveBonusSynergy(AdvancedSynergies[i].RequiredSynergy, false)))
                         {
                             guid = AdvancedSynergies[i].SynergyCompanionGuid;
-                            m_lastActiveSynergyTransformation = i;
+                            m_lastActiveAdvancedSynergyTransformation = i;
                         }
                     }
                 }
@@ -59,7 +60,7 @@ namespace LichItems
                         if (owner.HasActiveBonusSynergy(Synergies[i].RequiredSynergy, false))
                         {
                             guid = Synergies[i].SynergyCompanionGuid;
-                            m_lastActiveSynergyTransformation = i;
+                            m_lastActiveAdvancedSynergyTransformation = i;
                         }
                     }
                 }
@@ -84,7 +85,7 @@ namespace LichItems
             }
         }
 
-        private void DestroyCompanion()
+        public void DestroyCompanionAdvanced()
         {
             if (!ExtantCompanion)
             {
@@ -107,19 +108,19 @@ namespace LichItems
                         if ((AdvancedSynergies[i].UseStringSynergyDetectionInstead && LichsBookItem.PlayerHasActiveSynergy(m_owner, AdvancedSynergies[i].RequiredStringSynergy)) || (!AdvancedSynergies[i].UseStringSynergyDetectionInstead &&
                             m_owner.HasActiveBonusSynergy(AdvancedSynergies[i].RequiredSynergy, false)))
                         {
-                            if (m_lastActiveSynergyTransformation != i)
+                            if (m_lastActiveAdvancedSynergyTransformation != i)
                             {
-                                DestroyCompanion();
-                                CreateCompanion(m_owner);
+                                DestroyCompanionAdvanced();
+                                CreateCompanionAdvanced(m_owner);
                             }
                             flag = true;
                             break;
                         }
                     }
-                    if (!flag && m_lastActiveSynergyTransformation != -1)
+                    if (!flag && m_lastActiveAdvancedSynergyTransformation != -1)
                     {
-                        DestroyCompanion();
-                        CreateCompanion(m_owner);
+                        DestroyCompanionAdvanced();
+                        CreateCompanionAdvanced(m_owner);
                     }
                 }
             }
@@ -127,30 +128,30 @@ namespace LichItems
 
         public void SetExtantCompanion(GameObject companion)
         {
-            extantCompanionInfo.SetValue(this, companion);
+            m_extantCompanion = companion;
         }
 
         public override void Pickup(PlayerController player)
         {
             base.Pickup(player);
-            DestroyCompanion();
-            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Combine(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
-            CreateCompanion(player);
+            DestroyCompanionAdvanced();
+            player.OnNewFloorLoaded += HandleNewFloorAdvanced;
+            CreateCompanionAdvanced(player);
         }
 
-        private void HandleNewFloor(PlayerController obj)
+        public void HandleNewFloorAdvanced(PlayerController obj)
         {
-            DestroyCompanion();
+            DestroyCompanionAdvanced();
             if (!PreventRespawnOnFloorLoad)
             {
-                CreateCompanion(obj);
+                CreateCompanionAdvanced(obj);
             }
         }
 
         public override DebrisObject Drop(PlayerController player)
         {
-            DestroyCompanion();
-            player.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(player.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
+            DestroyCompanionAdvanced();
+            player.OnNewFloorLoaded -= HandleNewFloorAdvanced;
             return base.Drop(player);
         }
 
@@ -159,16 +160,15 @@ namespace LichItems
             if (m_owner != null)
             {
                 PlayerController owner = m_owner;
-                owner.OnNewFloorLoaded = (Action<PlayerController>)Delegate.Remove(owner.OnNewFloorLoaded, new Action<PlayerController>(HandleNewFloor));
+                owner.OnNewFloorLoaded -= HandleNewFloorAdvanced;
             }
-            DestroyCompanion();
+            DestroyCompanionAdvanced();
             base.OnDestroy();
         }
 
         public bool UseAdvancedSynergies;
         [SerializeField]
         public AdvancedCompanionTransformSynergy[] AdvancedSynergies = new AdvancedCompanionTransformSynergy[0];
-        private int m_lastActiveSynergyTransformation;
-        private static FieldInfo extantCompanionInfo = typeof(CompanionItem).GetField("m_extantCompanion", BindingFlags.NonPublic | BindingFlags.Instance);
+        public int m_lastActiveAdvancedSynergyTransformation;
     }
 }

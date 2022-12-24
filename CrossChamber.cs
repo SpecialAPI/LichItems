@@ -23,7 +23,7 @@ namespace LichItems
                 var item = obj.AddComponent<AdvancedCompanionItem>();
                 ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
                 string shortDesc = "Marbled Minion";
-                string longDesc = "A relic that summons a Lich personal guard.";
+                string longDesc = "A relic that summons one of the Lich's personal guards.";
                 ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
                 item.quality = PickupObject.ItemQuality.SPECIAL;
                 item.CompanionGuid = "Cross_Chamber";
@@ -85,13 +85,15 @@ namespace LichItems
             {
                 prefab = CompanionBuilder.BuildPrefab("Cross Chamber", "Cross_Chamber", "LichItems/Resources/CrossChamber/IdleRight/tomb_idle_right_001", new IntVector2(0, 0), new IntVector2(14, 16));
                 var companion = prefab.AddComponent<CompanionController>();
-                PixelCollider collider = new PixelCollider();
-                collider.ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual;
-                collider.CollisionLayer = CollisionLayer.PlayerHitBox;
-                collider.ManualWidth = 14;
-                collider.ManualHeight = 16;
-                collider.ManualOffsetX = 0;
-                collider.ManualOffsetY = 0;
+                PixelCollider collider = new PixelCollider
+                {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.PlayerHitBox,
+                    ManualWidth = 14,
+                    ManualHeight = 16,
+                    ManualOffsetX = 0,
+                    ManualOffsetY = 0
+                };
                 KnockbackDoer knockback = companion.gameObject.GetOrAddComponent<KnockbackDoer>();
                 knockback.weight = 100f;
                 companion.aiActor.IsNormalEnemy = false;
@@ -112,7 +114,7 @@ namespace LichItems
                 prefab.AddAnimation("run_left", "LichItems/Resources/CrossChamber/MoveLeft", 10, AnimationType.Move, DirectionType.TwoWayHorizontal);
                 prefab.AddAnimation("hit_left", "LichItems/Resources/CrossChamber/HitLeft", 6, AnimationType.Hit, DirectionType.TwoWayHorizontal).wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
                 prefab.AddAnimation("hit_right", "LichItems/Resources/CrossChamber/HitRight", 6, AnimationType.Hit, DirectionType.TwoWayHorizontal).wrapMode = tk2dSpriteAnimationClip.WrapMode.Once;
-                BehaviorSpeculator component = CrossChamber.prefab.GetComponent<BehaviorSpeculator>();
+                BehaviorSpeculator component = prefab.GetComponent<BehaviorSpeculator>();
                 component.MovementBehaviors.Add(new CompanionFollowPlayerBehavior
                 {
                     IdleAnimations = new string[]
@@ -129,13 +131,15 @@ namespace LichItems
             {
                 synergyPrefab = CompanionBuilder.BuildPrefab("Synergy Cross Chamber", "Synergy_Cross_Chamber", "LichItems/Resources/CrossChamber/IdleRight/tomb_idle_right_001", new IntVector2(0, 0), new IntVector2(14, 16));
                 var companion = synergyPrefab.AddComponent<CompanionController>();
-                PixelCollider collider = new PixelCollider();
-                collider.ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual;
-                collider.CollisionLayer = CollisionLayer.PlayerHitBox;
-                collider.ManualWidth = 14;
-                collider.ManualHeight = 16;
-                collider.ManualOffsetX = 0;
-                collider.ManualOffsetY = 0;
+                PixelCollider collider = new PixelCollider
+                {
+                    ColliderGenerationMode = PixelCollider.PixelColliderGeneration.Manual,
+                    CollisionLayer = CollisionLayer.PlayerHitBox,
+                    ManualWidth = 14,
+                    ManualHeight = 16,
+                    ManualOffsetX = 0,
+                    ManualOffsetY = 0
+                };
                 KnockbackDoer knockback = companion.gameObject.GetOrAddComponent<KnockbackDoer>();
                 knockback.weight = 100f;
                 companion.aiActor.IsNormalEnemy = false;
@@ -264,14 +268,14 @@ namespace LichItems
         {
             public void Start()
             {
-                base.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyHitBox));
-                base.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
-                base.healthHaver.OnDamaged += HandleDamaged;
+                specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyHitBox));
+                specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
+                healthHaver.OnDamaged += HandleDamaged;
             }
 
             private void HandleDamaged(float resultValue, float maxValue, CoreDamageTypes damageTypes, DamageCategory damageCategory, Vector2 damageDirection)
             {
-                base.healthHaver.FullHeal();
+                healthHaver.FullHeal();
             }
         }
         public static GameObject prefab;

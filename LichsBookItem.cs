@@ -9,7 +9,7 @@ using Gungeon;
 
 namespace LichItems
 {
-    class LichsBookItem : PlayerItem
+    public class LichsBookItem : PlayerItem
     {
         public static void Init()
         {
@@ -19,7 +19,7 @@ namespace LichItems
             var item = obj.AddComponent<LichsBookItem>();
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
             string shortDesc = "Reload Spell";
-            string longDesc = "This is Book from Gungeon Master.";
+            string longDesc = "The book of the Gungoen master.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
             ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 600);
             item.consumable = false;
@@ -284,7 +284,7 @@ namespace LichItems
         public override void Update()
         {
             base.Update();
-            ProcessInfinilichStatus(base.LastOwner, false);
+            ProcessInfinilichStatus(LastOwner, false);
         }
 
         public override void OnDestroy()

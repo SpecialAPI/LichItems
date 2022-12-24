@@ -11,6 +11,8 @@ using BepInEx;
 
 namespace LichItems
 {
+    [BepInPlugin("spapi.etg.lichitems", "Lich Items", "1.0.0")]
+    [BepInDependency(ETGModMainBehaviour.GUID)]
     public class LichModule : BaseUnityPlugin
     {
         public void Awake()

@@ -10,14 +10,14 @@ using Dungeonator;
 
 namespace LichItems
 {
-    class LichsGun
+    public class LichsGun
     {
         public static void Init()
         {
             Gun gun = ETGMod.Databases.Items.NewGun("Lich's Gun", "lichsgun");
             Game.Items.Rename("outdated_gun_mods:lich's_gun", "spapi:lichs_gun");
             GunExt.SetShortDescription(gun, "The Freeshooter");
-            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
+            GunExt.SetLongDescription(gun, "The gun of the Gungeon master.");
             GunExt.SetupSprite(gun, null, "lichsgun_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
@@ -299,7 +299,7 @@ namespace LichItems
             Gun gun = ETGMod.Databases.Items.NewGun("Synergy Lich's Gun", "lichsgun2");
             Game.Items.Rename("outdated_gun_mods:synergy_lich's_gun", "spapi:lichs_gun+master_of_the_gungeon");
             GunExt.SetShortDescription(gun, "The Freeshooter");
-            GunExt.SetLongDescription(gun, "This is Gun from Gungeon Master.");
+            GunExt.SetLongDescription(gun, "The gun of the Gungeon master.");
             GunExt.SetupSprite(gun, null, "lichsgun2_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
