@@ -19,7 +19,7 @@ namespace LichItems
             var item = obj.AddComponent<LichsBookItem>();
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
             string shortDesc = "Reload Spell";
-            string longDesc = "The book of the Gungoen master.";
+            string longDesc = "The book of the Gungoen master. Place to create a zone of instant reload.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
             ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 600);
             item.consumable = false;

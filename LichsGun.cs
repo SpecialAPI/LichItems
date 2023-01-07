@@ -17,7 +17,7 @@ namespace LichItems
             Gun gun = ETGMod.Databases.Items.NewGun("Lich's Gun", "lichsgun");
             Game.Items.Rename("outdated_gun_mods:lich's_gun", "spapi:lichs_gun");
             GunExt.SetShortDescription(gun, "The Freeshooter");
-            GunExt.SetLongDescription(gun, "The gun of the Gungeon master.");
+            GunExt.SetLongDescription(gun, "The gun of the Gungeon master. The bullets of this gun can be guided after being fired.");
             GunExt.SetupSprite(gun, null, "lichsgun_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);
@@ -114,6 +114,7 @@ namespace LichItems
             gun.quality = PickupObject.ItemQuality.SPECIAL;
             gun.barrelOffset.transform.localPosition = new Vector3(1.1875f, 0.5625f, 0f);
             gun.gunClass = GunClass.PISTOL;
+            gun.InfiniteAmmo = true;
             ETGMod.Databases.Items.Add(gun, null, "ANY");
             InitSynergyForm(gun);
         }
@@ -299,7 +300,7 @@ namespace LichItems
             Gun gun = ETGMod.Databases.Items.NewGun("Synergy Lich's Gun", "lichsgun2");
             Game.Items.Rename("outdated_gun_mods:synergy_lich's_gun", "spapi:lichs_gun+master_of_the_gungeon");
             GunExt.SetShortDescription(gun, "The Freeshooter");
-            GunExt.SetLongDescription(gun, "The gun of the Gungeon master.");
+            GunExt.SetLongDescription(gun, "The gun of the Gungeon master. The bullets of this gun can be guided after being fired.");
             GunExt.SetupSprite(gun, null, "lichsgun2_idle_001", 10);
             GunExt.SetAnimationFPS(gun, gun.shootAnimation, 12);
             GunExt.AddProjectileModuleFrom(gun, "klobb", true, false);

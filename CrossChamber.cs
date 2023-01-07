@@ -23,7 +23,7 @@ namespace LichItems
                 var item = obj.AddComponent<AdvancedCompanionItem>();
                 ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
                 string shortDesc = "Marbled Minion";
-                string longDesc = "A relic that summons one of the Lich's personal guards.";
+                string longDesc = "A relic that summons one of the Lich's personal guards. While unable to attack, it can still block bullets for the owner.";
                 ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
                 item.quality = PickupObject.ItemQuality.SPECIAL;
                 item.CompanionGuid = "Cross_Chamber";
