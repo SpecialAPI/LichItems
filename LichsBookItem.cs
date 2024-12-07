@@ -11,35 +11,54 @@ namespace LichItems
 {
     public class LichsBookItem : PlayerItem
     {
+        public GameObject LichsBookPrefab;
+        private GameObject m_instanceBook;
+        public tk2dSpriteAnimation replacementLibrary;
+        public tk2dSprite replacementHandSprite;
+        private PlayerController m_lastPlayer;
+        private bool m_transformed;
+        private readonly List<StatModifier> synergyModifiers = [];
+
+        public static CustomSynergyType MasterOfTheGungeonSynergy;
+
         public static void Init()
         {
-            string itemName = "Lich's Book";
-            string resourceName = "LichItems/Resources/lichsbook_item_001";
-            GameObject obj = new GameObject(itemName);
+            var itemName = "Lich's Book";
+            var resourceName = "LichItems/Resources/lichsbook_item_001";
+
+            var obj = new GameObject(itemName);
             var item = obj.AddComponent<LichsBookItem>();
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
-            string shortDesc = "Reload Spell";
-            string longDesc = "The book of the Gungoen master. Place to create a zone of instant reload.";
+
+            var shortDesc = "Reload Spell";
+            var longDesc = "The book of the Gungoen master. Place to create a zone of instant reload.";
+
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
             ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 600);
+
             item.consumable = false;
             item.quality = ItemQuality.C;
             Game.Items.Rename("spapi:lich's_book", "spapi:lichs_book");
-            GameObject shadow = SpriteBuilder.SpriteFromResource("LichItems/Resources/lichsbook_shadow_001");
+
+            var shadow = SpriteBuilder.SpriteFromResource("LichItems/Resources/lichsbook_shadow_001");
             shadow.SetActive(false);
             FakePrefab.MarkAsFakePrefab(shadow);
             DontDestroyOnLoad(shadow);
-            tk2dBaseSprite sprite = shadow.GetComponent<tk2dBaseSprite>();
-            ConstructOffsetsFromAnchor(sprite.GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.LowerCenter);
-            Shader shadowShader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
+
+            var sprite = shadow.GetComponent<tk2dBaseSprite>();
+            SpriteBuilder.ConstructOffsetsFromAnchor(sprite.GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.LowerCenter);
+
+            var shadowShader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
             sprite.GetCurrentSpriteDef().material.shader = shadowShader;
             sprite.GetCurrentSpriteDef().materialInst.shader = shadowShader;
-            GameObject book = SpriteBuilder.SpriteFromResource("LichItems/Resources/lichsbook_depoy_001");
+
+            var book = SpriteBuilder.SpriteFromResource("LichItems/Resources/lichsbook_depoy_001");
             book.SetActive(false);
             FakePrefab.MarkAsFakePrefab(book);
             DontDestroyOnLoad(book);
-            tk2dSpriteAnimator animator = book.gameObject.AddComponent<tk2dSpriteAnimator>();
-            List<int> ids = new List<int>
+
+            var animator = book.gameObject.AddComponent<tk2dSpriteAnimator>();
+            var ids = new List<int>
             {
                 book.GetComponent<tk2dBaseSprite>().spriteId,
                 SpriteBuilder.AddSpriteToCollection("LichItems/Resources/lichsbook_depoy_002", book.GetComponent<tk2dBaseSprite>().Collection),
@@ -50,21 +69,23 @@ namespace LichItems
                 SpriteBuilder.AddSpriteToCollection("LichItems/Resources/lichsbook_depoy_007", book.GetComponent<tk2dBaseSprite>().Collection),
                 SpriteBuilder.AddSpriteToCollection("LichItems/Resources/lichsbook_depoy_008", book.GetComponent<tk2dBaseSprite>().Collection),
             };
+
             foreach (int id in ids)
-            {
-                ConstructOffsetsFromAnchor(book.GetComponent<tk2dBaseSprite>().Collection.spriteDefinitions[id], tk2dBaseSprite.Anchor.LowerCenter);
-            }
+                SpriteBuilder.ConstructOffsetsFromAnchor(book.GetComponent<tk2dBaseSprite>().Collection.spriteDefinitions[id], tk2dBaseSprite.Anchor.LowerCenter);
+
             SpriteBuilder.AddAnimation(animator, book.GetComponent<tk2dBaseSprite>().Collection, ids, "idle", tk2dSpriteAnimationClip.WrapMode.Loop).fps = 10;
             animator.DefaultClipId = animator.GetClipIdByName("idle");
             animator.playAutomatically = true;
             book.AddComponent<LichsBook>().shadowPrefab = shadow;
             item.LichsBookPrefab = book;
+
+            MasterOfTheGungeonSynergy = ETGModCompatibility.ExtendEnum<CustomSynergyType>(LichModule.GUID, "MASTER_OF_THE_GUNGEON");
             BuildLibrary(item);
         }
 
         public static tk2dSpriteDefinition CopyDefinitionFrom(tk2dSpriteDefinition other)
         {
-            tk2dSpriteDefinition result = new tk2dSpriteDefinition
+            var result = new tk2dSpriteDefinition
             {
                 boundsDataCenter = new Vector3
                 {
@@ -123,6 +144,7 @@ namespace LichItems
                 regionX = other.regionX,
                 regionY = other.regionY,
                 tangents = other.tangents,
+
                 texelSize = new Vector2
                 {
                     x = other.texelSize.x,
@@ -167,118 +189,77 @@ namespace LichItems
 
         private static void BuildLibrary(LichsBookItem targetBook)
         {
-            List<string> spriteNames = new List<string>();
-            string[] resources = ResourceExtractor.GetResourceNames();
-            string spriteDirectory = "LichItems/Resources/InfinilichTransformation";
+            var spriteNames = new List<string>();
+            var resources = ResourceExtractor.GetResourceNames();
+
+            var spriteDirectory = "LichItems/Resources/InfinilichTransformation";
             for (int i = 0; i < resources.Length; i++)
             {
-                if (resources[i].StartsWith(spriteDirectory.Replace('/', '.'), StringComparison.OrdinalIgnoreCase))
-                {
-                    spriteNames.Add(resources[i]);
-                }
+                var res = resources[i];
+
+                if (!res.StartsWith(spriteDirectory.Replace('/', '.'), StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                spriteNames.Add(res);
             }
-            List<Texture2D> sprites = new List<Texture2D>();
-            foreach (string name in spriteNames)
-            {
+
+            var sprites = new List<Texture2D>();
+
+            foreach (var name in spriteNames)
                 sprites.Add(ResourceExtractor.GetTextureFromResource(name));
-            }
-            tk2dSpriteAnimation library = Instantiate((PickupObjectDatabase.GetById(163) as BulletArmorItem).knightLibrary);
+
+            var library = Instantiate((PickupObjectDatabase.GetById(163) as BulletArmorItem).knightLibrary);
             DontDestroyOnLoad(library);
             var orig = library.clips[0].frames[0].spriteCollection;
             var copyCollection = Instantiate(orig);
-            tk2dSpriteDefinition copydef = CopyDefinitionFrom((PickupObjectDatabase.GetById(607) as BankMaskItem).OverrideHandSprite.GetCurrentSpriteDef());
+
+            var copydef = CopyDefinitionFrom((PickupObjectDatabase.GetById(607) as BankMaskItem).OverrideHandSprite.GetCurrentSpriteDef());
             copydef.name = "knight_hand_001";
-            int handId = SpriteBuilder.AddSpriteToCollection(copydef, copyCollection);
+            var handId = SpriteBuilder.AddSpriteToCollection(copydef, copyCollection);
 
             DontDestroyOnLoad(copyCollection);
 
-            RuntimeAtlasPage page = new RuntimeAtlasPage();
-            for (int i = 0; i < sprites.Count; i++)
+            for (var i = 0; i < sprites.Count; i++)
             {
                 var tex = sprites[i];
                 var def = copyCollection.GetSpriteDefinition(tex.name);
-                if (def != null)
-                {
-                    def.ReplaceTexture(tex);
-                    def.name = def.name.Replace("knight", "inflich");
-                    MakeOffset(def, new Vector2(-0.0625f, 0f), false);
-                }
+
+                if (def == null)
+                    continue;
+
+                def.ReplaceTexture(tex);
+                def.name = def.name.Replace("knight", "inflich");
+                SpriteBuilder.MakeOffset(def, new Vector2(-0.0625f, 0f), false);
             }
-            page.Apply();
+
             foreach (var clip in library.clips)
             {
-                for (int i = 0; i < clip.frames.Length; i++)
-                {
+                for (var i = 0; i < clip.frames.Length; i++)
                     clip.frames[i].spriteCollection = copyCollection;
-                }
             }
-            foreach (tk2dSpriteAnimationClip clip in library.clips)
+
+            foreach (var clip in library.clips)
             {
-                foreach (tk2dSpriteAnimationFrame frame in clip.frames)
+                foreach (var frame in clip.frames)
                 {
-                    if (!string.IsNullOrEmpty(frame.eventAudio) && (frame.eventAudio == "Play_FS" || frame.eventAudio == "Play_CHR_boot_stairs_01"))
-                    {
-                        frame.eventAudio = "";
-                    }
+                    if (string.IsNullOrEmpty(frame.eventAudio))
+                        continue;
+
+                    if(frame.eventAudio != "Play_FS" && frame.eventAudio != "Play_CHR_boot_stairs_01")
+                        continue;
+
+                    frame.eventAudio = "";
                 }
             }
-            GameObject spriteObj = new GameObject("OverrideHandSprite");
+
+            var spriteObj = new GameObject("OverrideHandSprite");
             spriteObj.SetActive(false);
             DontDestroyOnLoad(spriteObj);
-            tk2dSprite sprite = spriteObj.AddComponent<tk2dSprite>();
+
+            var sprite = spriteObj.AddComponent<tk2dSprite>();
             sprite.SetSprite(copyCollection, handId);
             targetBook.replacementHandSprite = sprite;
             targetBook.replacementLibrary = library;
-        }
-
-        public static void ConstructOffsetsFromAnchor(tk2dSpriteDefinition def, tk2dBaseSprite.Anchor anchor, Vector2? scale = null, bool fixesScale = false, bool changesCollider = true)
-        {
-            if (!scale.HasValue)
-            {
-                scale = new Vector2?(def.position3);
-            }
-            if (fixesScale)
-            {
-                Vector2 fixedScale = scale.Value - def.position0.XY();
-                scale = new Vector2?(fixedScale);
-            }
-            float xOffset = 0;
-            if (anchor == tk2dBaseSprite.Anchor.LowerCenter || anchor == tk2dBaseSprite.Anchor.MiddleCenter || anchor == tk2dBaseSprite.Anchor.UpperCenter)
-            {
-                xOffset = -(scale.Value.x / 2f);
-            }
-            else if (anchor == tk2dBaseSprite.Anchor.LowerRight || anchor == tk2dBaseSprite.Anchor.MiddleRight || anchor == tk2dBaseSprite.Anchor.UpperRight)
-            {
-                xOffset = -scale.Value.x;
-            }
-            float yOffset = 0;
-            if (anchor == tk2dBaseSprite.Anchor.MiddleLeft || anchor == tk2dBaseSprite.Anchor.MiddleCenter || anchor == tk2dBaseSprite.Anchor.MiddleLeft)
-            {
-                yOffset = -(scale.Value.y / 2f);
-            }
-            else if (anchor == tk2dBaseSprite.Anchor.UpperLeft || anchor == tk2dBaseSprite.Anchor.UpperCenter || anchor == tk2dBaseSprite.Anchor.UpperRight)
-            {
-                yOffset = -scale.Value.y;
-            }
-            MakeOffset(def, new Vector2(xOffset, yOffset), changesCollider);
-        }
-
-        public static void MakeOffset(tk2dSpriteDefinition def, Vector2 offset, bool changesCollider = false)
-        {
-            float xOffset = offset.x;
-            float yOffset = offset.y;
-            def.position0 += new Vector3(xOffset, yOffset, 0);
-            def.position1 += new Vector3(xOffset, yOffset, 0);
-            def.position2 += new Vector3(xOffset, yOffset, 0);
-            def.position3 += new Vector3(xOffset, yOffset, 0);
-            def.boundsDataCenter += new Vector3(xOffset, yOffset, 0);
-            def.boundsDataExtents += new Vector3(xOffset, yOffset, 0);
-            def.untrimmedBoundsDataCenter += new Vector3(xOffset, yOffset, 0);
-            def.untrimmedBoundsDataExtents += new Vector3(xOffset, yOffset, 0);
-            if (def.colliderVertices != null && def.colliderVertices.Length > 0 && changesCollider)
-            {
-                def.colliderVertices[0] += new Vector3(xOffset, yOffset, 0);
-            }
         }
 
         public override void Update()
@@ -290,83 +271,74 @@ namespace LichItems
         public override void OnDestroy()
         {
             if (m_transformed)
-            {
                 ProcessInfinilichStatus(null, true);
-            }
-            base.OnDestroy();
-        }
 
-        public static bool PlayerHasActiveSynergy(PlayerController player, string synergyNameToCheck)
-        {
-            foreach (int index in player.ActiveExtraSynergies)
-            {
-                AdvancedSynergyEntry synergy = GameManager.Instance.SynergyManager.synergies[index];
-                if (synergy.NameKey == synergyNameToCheck)
-                {
-                    return true;
-                }
-            }
-            return false;
+            base.OnDestroy();
         }
 
         private void RevealAllRooms(PlayerController player)
         {
-            if (Minimap.Instance != null)
-            {
-                Minimap.Instance.RevealAllRooms(true);
-            }
+            if (Minimap.Instance == null)
+                return;
+
+            Minimap.Instance.RevealAllRooms(true);
         }
 
         private void ProcessInfinilichStatus(PlayerController player, bool forceDisable = false)
         {
-            bool flag = player && PlayerHasActiveSynergy(player, "Master of the Gungeon") && !forceDisable;
-            if (flag && !m_transformed)
+            var shouldTransform = player && player.HasActiveBonusSynergy(MasterOfTheGungeonSynergy) && !forceDisable;
+
+            if (shouldTransform && !m_transformed)
             {
                 m_lastPlayer = player;
-                if (player)
-                {
-                    m_transformed = true;
-                    if (Minimap.Instance != null)
-                    {
-                        Minimap.Instance.RevealAllRooms(true);
-                    }
-                    player.OnNewFloorLoaded += RevealAllRooms;
-                    player.carriedConsumables.InfiniteKeys = true;
-                    player.OverrideAnimationLibrary = replacementLibrary;
-                    player.SetOverrideShader(ShaderCache.Acquire(player.LocalShaderName));
-                    if (player.characterIdentity == PlayableCharacters.Eevee)
-                    {
-                        player.GetComponent<CharacterAnimationRandomizer>().AddOverrideAnimLibrary(replacementLibrary);
-                    }
-                    player.ChangeHandsToCustomType(replacementHandSprite.Collection, replacementHandSprite.spriteId);
-                    StatModifier mod1 = StatModifier.Create(PlayerStats.StatType.AdditionalItemCapacity, StatModifier.ModifyMethod.ADDITIVE, 1);
-                    player.ownerlessStatModifiers.Add(mod1);
-                    synergyModifiers.Add(mod1);
-                    player.stats.RecalculateStats(player, false, false);
-                }
+
+                if (!player)
+                    return;
+
+                m_transformed = true;
+
+                if (Minimap.Instance != null)
+                    Minimap.Instance.RevealAllRooms(true);
+
+                player.OnNewFloorLoaded += RevealAllRooms;
+                player.carriedConsumables.InfiniteKeys = true;
+                player.OverrideAnimationLibrary = replacementLibrary;
+                player.SetOverrideShader(ShaderCache.Acquire(player.LocalShaderName));
+
+                if (player.characterIdentity == PlayableCharacters.Eevee)
+                    player.GetComponent<CharacterAnimationRandomizer>().AddOverrideAnimLibrary(replacementLibrary);
+
+                player.ChangeHandsToCustomType(replacementHandSprite.Collection, replacementHandSprite.spriteId);
+
+                var mod1 = StatModifier.Create(PlayerStats.StatType.AdditionalItemCapacity, StatModifier.ModifyMethod.ADDITIVE, 1);
+                player.ownerlessStatModifiers.Add(mod1);
+                player.stats.RecalculateStats(player, false, false);
+                synergyModifiers.Add(mod1);
             }
-            else if (m_transformed && !flag)
+            else if (m_transformed && !shouldTransform)
             {
-                if (m_lastPlayer)
-                {
-                    m_lastPlayer.OnNewFloorLoaded -= RevealAllRooms;
-                    m_lastPlayer.carriedConsumables.InfiniteKeys = false;
-                    m_lastPlayer.OverrideAnimationLibrary = null;
-                    m_lastPlayer.ClearOverrideShader();
-                    if (m_lastPlayer.characterIdentity == PlayableCharacters.Eevee)
-                    {
-                        m_lastPlayer.GetComponent<CharacterAnimationRandomizer>().RemoveOverrideAnimLibrary(replacementLibrary);
-                    }
-                    m_lastPlayer.RevertHandsToBaseType();
-                    foreach (StatModifier mod in synergyModifiers)
-                    {
-                        m_lastPlayer.ownerlessStatModifiers.Remove(mod);
-                    }
-                    synergyModifiers.Clear();
-                    m_lastPlayer.stats.RecalculateStats(m_lastPlayer, false, false);
-                    m_lastPlayer = null;
-                }
                 m_transformed = false;
+
+                if (!m_lastPlayer)
+                    return;
+
+                m_lastPlayer.OnNewFloorLoaded -= RevealAllRooms;
+                m_lastPlayer.carriedConsumables.InfiniteKeys = false;
+                m_lastPlayer.OverrideAnimationLibrary = null;
+                m_lastPlayer.ClearOverrideShader();
+
+                if (m_lastPlayer.characterIdentity == PlayableCharacters.Eevee)
+                    m_lastPlayer.GetComponent<CharacterAnimationRandomizer>().RemoveOverrideAnimLibrary(replacementLibrary);
+
+                m_lastPlayer.RevertHandsToBaseType();
+
+                foreach (StatModifier mod in synergyModifiers)
+                    m_lastPlayer.ownerlessStatModifiers.Remove(mod);
+
+                m_lastPlayer.stats.RecalculateStats(m_lastPlayer, false, false);
+                synergyModifiers.Clear();
+
+                m_lastPlayer = null;
             }
         }
 
@@ -379,13 +351,5 @@ namespace LichItems
         {
             m_instanceBook = Instantiate(LichsBookPrefab, user.CenterPosition.ToVector3ZisY(0f), Quaternion.identity, null);
         }
-
-        public GameObject LichsBookPrefab;
-        private GameObject m_instanceBook;
-        public tk2dSpriteAnimation replacementLibrary;
-        public tk2dSprite replacementHandSprite;
-        private PlayerController m_lastPlayer;
-        private bool m_transformed;
-        private List<StatModifier> synergyModifiers = new List<StatModifier>();
     }
 }

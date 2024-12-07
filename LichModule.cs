@@ -8,13 +8,16 @@ using UnityEngine;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using BepInEx;
+using HarmonyLib;
 
 namespace LichItems
 {
-    [BepInPlugin("spapi.etg.lichitems", "Lich Items", "1.0.3")]
+    [BepInPlugin(GUID, "Lich Items", "1.0.6")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
     public class LichModule : BaseUnityPlugin
     {
+        public const string GUID = "spapi.etg.lichitems";
+
         public void Awake()
         {
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
@@ -22,41 +25,47 @@ namespace LichItems
 
         public void GMStart(GameManager gm)
         {
+            new Harmony(GUID).PatchAll();
+
             ItemBuilder.Init();
             CrossChamber.Init();
             LichsBookItem.Init();
             LichsGun.Init();
-            CustomSynergies.Add("Master of the Gungeon", new List<string> { "spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets" });
-            CustomSynergies.Add("Crossfire", new List<string> { "spapi:cross_chamber", "magnum" });
-            AdvancedGunBehaviour.Setup();
+
+            CustomSynergies.Add("Master of the Gungeon", LichsBookItem.MasterOfTheGungeonSynergy, ["spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets"]);
+            CustomSynergies.Add("Crossfire", CrossChamber.CrossfireSynergy, ["spapi:cross_chamber", "magnum"]);
+
             ETGMod.StartGlobalCoroutine(DelayedStartCR());
         }
 
         private IEnumerator DelayedStartCR()
         {
             yield return null;
-            GameObject obj = BraveResources.Load("PlayerLich") as GameObject;
-            if (obj != null)
+
+            var obj = BraveResources.Load("PlayerLich") as GameObject;
+
+            if (obj == null || obj.GetComponent<PlayerController>() is not PlayerController player)
+                yield break;
+
+            var dustup = new GameObject("InvisibleInstantDestroyDustup");
+            dustup.SetActive(false);
+            FakePrefab.MarkAsFakePrefab(dustup);
+            DontDestroyOnLoad(dustup);
+
+            dustup.AddComponent<InstantDestroyDustup>();
+            player.OverrideDustUp = dustup;
+
+            foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips)
             {
-                PlayerController player = obj.GetComponent<PlayerController>();
-                if (player != null)
+                foreach (tk2dSpriteAnimationFrame frame in clip.frames)
                 {
-                    GameObject dustup = new GameObject("InvisibleInstantDestroyDustup");
-                    dustup.SetActive(false);
-                    FakePrefab.MarkAsFakePrefab(dustup);
-                    DontDestroyOnLoad(dustup);
-                    dustup.AddComponent<InstantDestroyDustup>();
-                    player.OverrideDustUp = dustup;
-                    foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips)
-                    {
-                        foreach (tk2dSpriteAnimationFrame frame in clip.frames)
-                        {
-                            if (!string.IsNullOrEmpty(frame.eventAudio) && (frame.eventAudio == "Play_FS" || frame.eventAudio == "Play_CHR_boot_stairs_01"))
-                            {
-                                frame.eventAudio = "";
-                            }
-                        }
-                    }
+                    if (string.IsNullOrEmpty(frame.eventAudio))
+                        continue;
+
+                    if (frame.eventAudio != "Play_FS" && frame.eventAudio != "Play_CHR_boot_stairs_01")
+                        continue;
+
+                    frame.eventAudio = "";
                 }
             }
         }

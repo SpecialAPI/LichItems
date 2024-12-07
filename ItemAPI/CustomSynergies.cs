@@ -4,31 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MonoMod.RuntimeDetour;
+using HarmonyLib;
 
 namespace LichItems.ItemAPI
 {
     public static class CustomSynergies
     {
-        public static Hook synergyHook = new Hook(
-            typeof(StringTableManager).GetMethod("GetSynergyString", BindingFlags.Static | BindingFlags.Public),
-            typeof(CustomSynergies).GetMethod("SynergyStringHook")
-        );
-
-        public static AdvancedSynergyEntry Add(string name, List<string> mandatoryConsoleIDs, List<string> optionalConsoleIDs = null, bool ignoreLichEyeBullets = true)
+        public static AdvancedSynergyEntry Add(string name, CustomSynergyType synergyType, List<string> mandatoryConsoleIDs, List<string> optionalConsoleIDs = null, bool ignoreLichEyeBullets = true)
         {
             if (mandatoryConsoleIDs == null || mandatoryConsoleIDs.Count == 0) { ETGModConsole.Log($"Synergy {name} has no mandatory items/guns."); return null; }
+
             List<int>
-                itemIDs = new List<int>(),
-                gunIDs = new List<int>(),
-                optItemIDs = new List<int>(),
-                optGunIDs = new List<int>();
-            PickupObject pickup;
+                itemIDs = [],
+                gunIDs = [],
+                optItemIDs = [],
+                optGunIDs = [];
+
+            var synergyId = name.ToID().ToUpperInvariant();
+            var key = $"#SPAPI_{synergyId}";
+
             foreach (var id in mandatoryConsoleIDs)
             {
-                pickup = Gungeon.Game.Items[id];
-                if (pickup && pickup.GetComponent<Gun>())
+                var pickup = Gungeon.Game.Items[id];
+
+                if (pickup && pickup is Gun)
                     gunIDs.Add(pickup.PickupObjectId);
-                else if (pickup && (pickup.GetComponent<PlayerItem>() || pickup.GetComponent<PassiveItem>()))
+
+                else if (pickup && pickup is PlayerItem or PassiveItem)
                     itemIDs.Add(pickup.PickupObjectId);
             }
 
@@ -36,41 +38,37 @@ namespace LichItems.ItemAPI
             {
                 foreach (var id in optionalConsoleIDs)
                 {
-                    pickup = Gungeon.Game.Items[id];
-                    if (pickup && pickup.GetComponent<Gun>())
+                    var pickup = Gungeon.Game.Items[id];
+
+                    if (pickup && pickup is Gun)
                         optGunIDs.Add(pickup.PickupObjectId);
-                    else if (pickup && (pickup.GetComponent<PlayerItem>() || pickup.GetComponent<PassiveItem>()))
+
+                    else if (pickup && pickup is PlayerItem or PassiveItem)
                         optItemIDs.Add(pickup.PickupObjectId);
                 }
             }
 
-            AdvancedSynergyEntry entry = new AdvancedSynergyEntry()
+            var entry = new AdvancedSynergyEntry()
             {
-                NameKey = name,
+                NameKey = key,
                 MandatoryItemIDs = itemIDs,
                 MandatoryGunIDs = gunIDs,
                 OptionalItemIDs = optItemIDs,
                 OptionalGunIDs = optGunIDs,
-                bonusSynergies = new List<CustomSynergyType>(),
-                statModifiers = new List<StatModifier>(),
-                IgnoreLichEyeBullets = ignoreLichEyeBullets
+                bonusSynergies = [synergyType],
+                statModifiers = [],
+                IgnoreLichEyeBullets = ignoreLichEyeBullets,
+                ActiveWhenGunUnequipped = true
             };
+            ETGMod.Databases.Strings.Synergy.Set(key, name);
+
             Add(entry);
             return entry;
         }
 
         public static void Add(AdvancedSynergyEntry synergyEntry)
         {
-            AdvancedSynergyEntry[] array = new AdvancedSynergyEntry[] { synergyEntry };
-            GameManager.Instance.SynergyManager.synergies = GameManager.Instance.SynergyManager.synergies.Concat(array).ToArray<AdvancedSynergyEntry>();
-        }
-
-        public static string SynergyStringHook(Func<string, int, string> orig, string key, int index = -1)
-        {
-            string text = orig(key, index);
-            bool flag = string.IsNullOrEmpty(text);
-            if (flag) text = key;
-            return text;
+            GameManager.Instance.SynergyManager.synergies = GameManager.Instance.SynergyManager.synergies.AddToArray(synergyEntry);
         }
 
         public static bool HasMTGConsoleID(this PlayerController player, string consoleID)

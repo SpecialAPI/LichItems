@@ -276,5 +276,156 @@ namespace LichItems.ItemAPI
         {
             return go.AddComponent<T>().CopyFrom(toAdd) as T;
         }
+
+        public static tk2dSpriteDefinition CopyDefinitionFrom(tk2dSpriteDefinition other)
+        {
+            return new tk2dSpriteDefinition
+            {
+                name = other.name,
+
+                boundsDataCenter = other.boundsDataCenter,
+                boundsDataExtents = other.boundsDataExtents,
+                untrimmedBoundsDataCenter = other.untrimmedBoundsDataCenter,
+                untrimmedBoundsDataExtents = other.untrimmedBoundsDataExtents,
+
+                position0 = other.position0,
+                position1 = other.position1,
+                position2 = other.position2,
+                position3 = other.position3,
+
+                regionH = other.regionH,
+                regionW = other.regionW,
+                regionX = other.regionX,
+                regionY = other.regionY,
+
+                material = new Material(other.material),
+                materialId = other.materialId,
+                materialInst = new Material(other.materialInst),
+
+                complexGeometry = other.complexGeometry,
+                extractRegion = other.extractRegion,
+                flipped = other.flipped,
+                indices = [.. other.indices],
+
+                colliderConvex = other.colliderConvex,
+                colliderSmoothSphereCollisions = other.colliderSmoothSphereCollisions,
+                colliderType = other.colliderType,
+                colliderVertices = [.. other.colliderVertices],
+                collisionLayer = other.collisionLayer,
+
+                metadata = other.metadata,
+                normals = [.. other.normals],
+                physicsEngine = other.physicsEngine,
+
+                tangents = [.. other.tangents],
+                uvs = [.. other.uvs],
+
+                texelSize = other.texelSize,
+            };
+        }
+
+        public static void SetProjectileSpriteRight(Projectile proj, string name, int pixelWidth, int pixelHeight, bool lightened = true, tk2dBaseSprite.Anchor anchor = tk2dBaseSprite.Anchor.LowerLeft, bool anchorChangesCollider = true, bool fixesScale = false, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null, int? overrideColliderOffsetX = null, int? overrideColliderOffsetY = null, Projectile overrideProjectileToCopyFrom = null)
+        {
+            proj.GetAnySprite().spriteId = ETGMod.Databases.Items.ProjectileCollection.inst.GetSpriteIdByName(name);
+
+            var def = SetupDefinitionForProjectileSprite(name, proj.GetAnySprite().spriteId, pixelWidth, pixelHeight, lightened, overrideColliderPixelWidth, overrideColliderPixelHeight, overrideColliderOffsetX, overrideColliderOffsetY, overrideProjectileToCopyFrom);
+            ConstructOffsetsFromAnchor(def, anchor, def.position3, fixesScale, anchorChangesCollider);
+
+            proj.GetAnySprite().scale = new Vector3(1f, 1f, 1f);
+            proj.transform.localScale = new Vector3(1f, 1f, 1f);
+            proj.GetAnySprite().transform.localScale = new Vector3(1f, 1f, 1f);
+            proj.AdditionalScaleMultiplier = 1f;
+        }
+
+        public static tk2dSpriteDefinition SetupDefinitionForProjectileSprite(string name, int id, int pixelWidth, int pixelHeight, bool lightened = true, int? overrideColliderPixelWidth = null, int? overrideColliderPixelHeight = null, int? overrideColliderOffsetX = null, int? overrideColliderOffsetY = null, Projectile overrideProjectileToCopyFrom = null)
+        {
+            overrideColliderPixelWidth ??= pixelWidth;
+            overrideColliderPixelHeight ??= pixelHeight;
+
+            overrideColliderOffsetX ??= 0;
+            overrideColliderOffsetY ??= 0;
+
+            var thing = 16;
+            var thing2 = 16;
+            var trueWidth = (float)pixelWidth / thing;
+            var trueHeight = (float)pixelHeight / thing;
+            var colliderWidth = (float)overrideColliderPixelWidth.Value / thing2;
+            var colliderHeight = (float)overrideColliderPixelHeight.Value / thing2;
+            var colliderOffsetX = (float)overrideColliderOffsetX.Value / thing2;
+            var colliderOffsetY = (float)overrideColliderOffsetY.Value / thing2;
+
+            var def = CopyDefinitionFrom(ETGMod.Databases.Items.ProjectileCollection.inst.spriteDefinitions[(overrideProjectileToCopyFrom ?? (PickupObjectDatabase.GetById(lightened ? 47 : 12) as Gun).DefaultModule.projectiles[0]).GetAnySprite().spriteId]);
+
+            def.boundsDataCenter = new Vector3(trueWidth / 2f, trueHeight / 2f, 0f);
+            def.boundsDataExtents = new Vector3(trueWidth, trueHeight, 0f);
+
+            def.untrimmedBoundsDataCenter = new Vector3(trueWidth / 2f, trueHeight / 2f, 0f);
+            def.untrimmedBoundsDataExtents = new Vector3(trueWidth, trueHeight, 0f);
+
+            def.texelSize = new Vector2(1 / 16f, 1 / 16f);
+
+            def.position0 = new Vector3(0f, 0f, 0f);
+            def.position1 = new Vector3(0f + trueWidth, 0f, 0f);
+            def.position2 = new Vector3(0f, 0f + trueHeight, 0f);
+            def.position3 = new Vector3(0f + trueWidth, 0f + trueHeight, 0f);
+
+            def.colliderVertices[0].x = colliderOffsetX;
+            def.colliderVertices[0].y = colliderOffsetY;
+            def.colliderVertices[1].x = colliderWidth;
+            def.colliderVertices[1].y = colliderHeight;
+
+            def.name = name;
+
+            ETGMod.Databases.Items.ProjectileCollection.inst.spriteDefinitions[id] = def;
+            return def;
+        }
+
+        public static void ConstructOffsetsFromAnchor(tk2dSpriteDefinition def, tk2dBaseSprite.Anchor anchor, Vector2? scale = null, bool fixesScale = false, bool changesCollider = true)
+        {
+            scale ??= def.position3;
+
+            if (fixesScale)
+                scale = scale.GetValueOrDefault() - def.position0.XY();
+
+            var xOffset = ((int)anchor % 3) switch
+            {
+                1 => -(scale.Value.x / 2f),
+                2 => -scale.Value.x,
+
+                _ => 0
+            };
+
+            var yOffset = ((int)anchor / 3) switch
+            {
+                1 => -(scale.Value.y / 2f),
+                2 => -scale.Value.y,
+
+                _ => 0
+            };
+
+            MakeOffset(def, new Vector2(xOffset, yOffset), changesCollider);
+        }
+
+        public static void MakeOffset(tk2dSpriteDefinition def, Vector2 offset, bool changesCollider = false)
+        {
+            var xOffset = offset.x;
+            var yOffset = offset.y;
+
+            def.position0 += new Vector3(xOffset, yOffset, 0);
+            def.position1 += new Vector3(xOffset, yOffset, 0);
+            def.position2 += new Vector3(xOffset, yOffset, 0);
+            def.position3 += new Vector3(xOffset, yOffset, 0);
+
+            def.boundsDataCenter += new Vector3(xOffset, yOffset, 0);
+            def.boundsDataExtents += new Vector3(xOffset, yOffset, 0);
+
+            def.untrimmedBoundsDataCenter += new Vector3(xOffset, yOffset, 0);
+            def.untrimmedBoundsDataExtents += new Vector3(xOffset, yOffset, 0);
+
+            if (def.colliderVertices == null || def.colliderVertices.Length == 0 || !changesCollider)
+                return;
+
+            def.colliderVertices[0] += new Vector3(xOffset, yOffset, 0);
+        }
     }
 }
