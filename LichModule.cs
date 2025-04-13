@@ -12,7 +12,7 @@ using HarmonyLib;
 
 namespace LichItems
 {
-    [BepInPlugin(GUID, "Lich Items", "1.0.6")]
+    [BepInPlugin(GUID, "Lich Items", "1.0.7")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
     public class LichModule : BaseUnityPlugin
     {
@@ -47,14 +47,6 @@ namespace LichItems
             if (obj == null || obj.GetComponent<PlayerController>() is not PlayerController player)
                 yield break;
 
-            var dustup = new GameObject("InvisibleInstantDestroyDustup");
-            dustup.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(dustup);
-            DontDestroyOnLoad(dustup);
-
-            dustup.AddComponent<InstantDestroyDustup>();
-            player.OverrideDustUp = dustup;
-
             foreach (tk2dSpriteAnimationClip clip in player.spriteAnimator.Library.clips)
             {
                 foreach (tk2dSpriteAnimationFrame frame in clip.frames)
@@ -67,14 +59,6 @@ namespace LichItems
 
                     frame.eventAudio = "";
                 }
-            }
-        }
-
-        private class InstantDestroyDustup : MonoBehaviour
-        {
-            public void Start()
-            {
-                Destroy(gameObject);
             }
         }
     }
