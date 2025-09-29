@@ -12,7 +12,7 @@ using HarmonyLib;
 
 namespace LichItems
 {
-    [BepInPlugin(GUID, "Lich Items", "1.0.7")]
+    [BepInPlugin(GUID, "Lich Items", "1.0.8")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
     public class LichModule : BaseUnityPlugin
     {
