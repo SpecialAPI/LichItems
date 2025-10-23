@@ -13,7 +13,7 @@ using Alexandria;
 
 namespace LichItems
 {
-    [BepInPlugin(GUID, "Lich Items", "1.0.8")]
+    [BepInPlugin(GUID, "Lich Items", "1.0.9")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
     [BepInDependency(Alexandria.Alexandria.GUID)]
     public class LichModule : BaseUnityPlugin
