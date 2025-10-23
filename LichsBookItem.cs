@@ -79,7 +79,7 @@ namespace LichItems
             book.AddComponent<LichsBook>().shadowPrefab = shadow;
             item.LichsBookPrefab = book;
 
-            MasterOfTheGungeonSynergy = ETGModCompatibility.ExtendEnum<CustomSynergyType>(LichModule.GUID, "MASTER_OF_THE_GUNGEON");
+            MasterOfTheGungeonSynergy = ETGModCompatibility.ExtendEnum<CustomSynergyType>(Plugin.MOD_GUID, "MASTER_OF_THE_GUNGEON");
             BuildLibrary(item);
         }
 

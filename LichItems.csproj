@@ -39,7 +39,7 @@
     <Compile Include="LichsBook.cs" />
     <Compile Include="LichsBookItem.cs" />
     <Compile Include="LichsGun.cs" />
-    <Compile Include="LichModule.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

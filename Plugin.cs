@@ -13,12 +13,12 @@ using Alexandria;
 
 namespace LichItems
 {
-    [BepInPlugin(GUID, "Lich Items", "1.0.9")]
+    [BepInPlugin(MOD_GUID, "Lich Items", "1.0.9")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
     [BepInDependency(Alexandria.Alexandria.GUID)]
-    public class LichModule : BaseUnityPlugin
+    public class Plugin : BaseUnityPlugin
     {
-        public const string GUID = "spapi.etg.lichitems";
+        public const string MOD_GUID = "spapi.etg.lichitems";
 
         public void Start()
         {
@@ -27,8 +27,8 @@ namespace LichItems
 
         public void GMStart(GameManager gm)
         {
-            new Harmony(GUID).PatchAll();
-            ETGMod.Assets.SetupSpritesFromAssembly(typeof(LichModule).Assembly, "LichItems/Resources/MTGAPISpriteRoot");
+            new Harmony(MOD_GUID).PatchAll();
+            ETGMod.Assets.SetupSpritesFromAssembly(typeof(Plugin).Assembly, "LichItems/Resources/MTGAPISpriteRoot");
 
             CrossChamber.Init();
             LichsBookItem.Init();

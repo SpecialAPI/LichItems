@@ -31,7 +31,7 @@ namespace LichItems
             var longDesc = "A relic that summons one of the Lich's personal guards. While unable to attack, it can still block bullets for the owner.";
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "spapi");
 
-            CrossfireSynergy = ETGModCompatibility.ExtendEnum<CustomSynergyType>(LichModule.GUID, "CROSSFIRE");
+            CrossfireSynergy = ETGModCompatibility.ExtendEnum<CustomSynergyType>(Plugin.MOD_GUID, "CROSSFIRE");
 
             item.quality = PickupObject.ItemQuality.SPECIAL;
             item.CompanionGuid = "Cross_Chamber";
