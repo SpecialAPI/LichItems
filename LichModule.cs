@@ -9,16 +9,18 @@ using MonoMod.RuntimeDetour;
 using System.Reflection;
 using BepInEx;
 using HarmonyLib;
+using Alexandria;
 
 namespace LichItems
 {
     [BepInPlugin(GUID, "Lich Items", "1.0.8")]
     [BepInDependency(ETGModMainBehaviour.GUID)]
+    [BepInDependency(Alexandria.Alexandria.GUID)]
     public class LichModule : BaseUnityPlugin
     {
         public const string GUID = "spapi.etg.lichitems";
 
-        public void Awake()
+        public void Start()
         {
             ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
         }
@@ -26,13 +28,18 @@ namespace LichItems
         public void GMStart(GameManager gm)
         {
             new Harmony(GUID).PatchAll();
+            ETGMod.Assets.SetupSpritesFromAssembly(typeof(LichModule).Assembly, "LichItems/Resources/MTGAPISpriteRoot");
 
             CrossChamber.Init();
             LichsBookItem.Init();
             LichsGun.Init();
 
-            CustomSynergies.Add("Master of the Gungeon", ["spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets"]).bonusSynergies = [LichsBookItem.MasterOfTheGungeonSynergy];
-            CustomSynergies.Add("Crossfire", ["spapi:cross_chamber", "magnum"]).bonusSynergies = [CrossChamber.CrossfireSynergy];
+            var masterSynergy = CustomSynergies.Add("Master of the Gungeon", ["spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets"]);
+            masterSynergy.bonusSynergies = [LichsBookItem.MasterOfTheGungeonSynergy];
+            masterSynergy.ActiveWhenGunUnequipped = true;
+            var crossfireSynergy = CustomSynergies.Add("Crossfire", ["spapi:cross_chamber", "magnum"]);
+            crossfireSynergy.bonusSynergies = [CrossChamber.CrossfireSynergy];
+            crossfireSynergy.ActiveWhenGunUnequipped = true;
 
             ETGMod.StartGlobalCoroutine(DelayedStartCR());
         }
