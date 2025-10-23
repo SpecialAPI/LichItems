@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Gungeon;
 using UnityEngine;
-using LichItems.ItemAPI;
+using Alexandria.ItemAPI;
 using Dungeonator;
 using Alexandria.SoundAPI;
 
@@ -35,7 +35,7 @@ namespace LichItems
             projectile.baseData.speed = 22f;
             projectile.trackingSpeed = 500f;
             projectile.dumbfireTime = -1f;
-            SpriteBuilder.SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
+            GunTools.SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, overrideProjectileToCopyFrom: (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.DefaultModule.projectiles[0] = projectile;
 
             gun.DefaultModule.shootStyle = ProjectileModule.ShootStyle.SemiAutomatic;
@@ -63,7 +63,7 @@ namespace LichItems
                 var def = frame.spriteCollection.spriteDefinitions[frame.spriteId];
                 var offset = new Vector2(fireOffsets[i].x / 16f, fireOffsets[i].y / 16f);
 
-                SpriteBuilder.MakeOffset(def, offset);
+                GunTools.MakeOffset(def, offset);
             }
 
             for (int i = 0; i < reloadAnim.frames.Length; i++)
@@ -72,7 +72,7 @@ namespace LichItems
                 var def = frame.spriteCollection.spriteDefinitions[frame.spriteId];
                 var offset = new Vector2(reloadOffsets[i].x / 16f, reloadOffsets[i].y / 16f);
 
-                SpriteBuilder.MakeOffset(def, offset);
+                GunTools.MakeOffset(def, offset);
             }
 
             shootAnim.frames = new tk2dSpriteAnimationFrame[shootFrames.Count];
@@ -125,7 +125,7 @@ namespace LichItems
             killer.animator = animator;
 
             foreach (int id in muzzleFlashIds)
-                SpriteBuilder.ConstructOffsetsFromAnchor(VFXCollection.spriteDefinitions[id], tk2dBaseSprite.Anchor.MiddleLeft);
+                GunTools.ConstructOffsetsFromAnchor(VFXCollection.spriteDefinitions[id], tk2dBaseSprite.Anchor.MiddleLeft);
 
             gun.muzzleFlashEffects = new()
             {
@@ -177,7 +177,7 @@ namespace LichItems
             projectile.baseData.range = 100f;
             projectile.baseData.speed = 14f;
             projectile.dumbfireTime = -1f;
-            SpriteBuilder.SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, true, false, null, null, null, null, (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
+            GunTools.SetProjectileSpriteRight(projectile, "lichsgun_projectile_001", 6, 6, false, tk2dBaseSprite.Anchor.MiddleCenter, overrideProjectileToCopyFrom: (PickupObjectDatabase.GetById(183) as Gun).DefaultModule.projectiles[0]);
             gun.DefaultModule.projectiles[0] = projectile;
 
             gun.DefaultModule.shootStyle = ProjectileModule.ShootStyle.Burst;

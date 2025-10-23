@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LichItems.ItemAPI;
+using Alexandria.ItemAPI;
 using UnityEngine;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
@@ -27,13 +27,12 @@ namespace LichItems
         {
             new Harmony(GUID).PatchAll();
 
-            ItemBuilder.Init();
             CrossChamber.Init();
             LichsBookItem.Init();
             LichsGun.Init();
 
-            CustomSynergies.Add("Master of the Gungeon", LichsBookItem.MasterOfTheGungeonSynergy, ["spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets"]);
-            CustomSynergies.Add("Crossfire", CrossChamber.CrossfireSynergy, ["spapi:cross_chamber", "magnum"]);
+            CustomSynergies.Add("Master of the Gungeon", ["spapi:lichs_gun", "spapi:lichs_book", "lichs_eye_bullets"]).bonusSynergies = [LichsBookItem.MasterOfTheGungeonSynergy];
+            CustomSynergies.Add("Crossfire", ["spapi:cross_chamber", "magnum"]).bonusSynergies = [CrossChamber.CrossfireSynergy];
 
             ETGMod.StartGlobalCoroutine(DelayedStartCR());
         }

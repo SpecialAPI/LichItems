@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using LichItems.ItemAPI;
+using Alexandria.ItemAPI;
 using Gungeon;
 using DirectionType = DirectionalAnimation.DirectionType;
-using AnimationType = LichItems.ItemAPI.CompanionBuilder.AnimationType;
+using AnimationType = Alexandria.ItemAPI.CompanionBuilder.AnimationType;
 using MonoMod.RuntimeDetour;
 
 namespace LichItems
@@ -160,7 +160,7 @@ namespace LichItems
             var hand = SpriteBuilder.SpriteFromResource("LichItems/Resources/CrossChamber/Hand/hand_001", new GameObject("SynergyCrossChamberHand"));
             FakePrefab.MarkAsFakePrefab(hand);
             UnityEngine.Object.DontDestroyOnLoad(hand);
-            SpriteBuilder.ConstructOffsetsFromAnchor(hand.GetComponent<tk2dBaseSprite>().GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.MiddleCenter);
+            GunTools.ConstructOffsetsFromAnchor(hand.GetComponent<tk2dBaseSprite>().GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.MiddleCenter);
 
             var handController = hand.AddComponent<PlayerHandController>();
             handController.ForceRenderersOff = false;

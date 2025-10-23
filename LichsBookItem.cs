@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using LichItems.ItemAPI;
+using Alexandria.ItemAPI;
 using Gungeon;
 
 namespace LichItems
@@ -46,7 +46,7 @@ namespace LichItems
             DontDestroyOnLoad(shadow);
 
             var sprite = shadow.GetComponent<tk2dBaseSprite>();
-            SpriteBuilder.ConstructOffsetsFromAnchor(sprite.GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.LowerCenter);
+            GunTools.ConstructOffsetsFromAnchor(sprite.GetCurrentSpriteDef(), tk2dBaseSprite.Anchor.LowerCenter);
 
             var shadowShader = GameManager.Instance.RewardManager.A_Chest.gameObject.transform.Find("Shadow").gameObject.GetComponent<tk2dSprite>().renderer.material.shader;
             sprite.GetCurrentSpriteDef().material.shader = shadowShader;
@@ -71,7 +71,7 @@ namespace LichItems
             };
 
             foreach (int id in ids)
-                SpriteBuilder.ConstructOffsetsFromAnchor(book.GetComponent<tk2dBaseSprite>().Collection.spriteDefinitions[id], tk2dBaseSprite.Anchor.LowerCenter);
+                GunTools.ConstructOffsetsFromAnchor(book.GetComponent<tk2dBaseSprite>().Collection.spriteDefinitions[id], tk2dBaseSprite.Anchor.LowerCenter);
 
             SpriteBuilder.AddAnimation(animator, book.GetComponent<tk2dBaseSprite>().Collection, ids, "idle", tk2dSpriteAnimationClip.WrapMode.Loop).fps = 10;
             animator.DefaultClipId = animator.GetClipIdByName("idle");
@@ -229,7 +229,7 @@ namespace LichItems
 
                 def.ReplaceTexture(tex);
                 def.name = def.name.Replace("knight", "inflich");
-                SpriteBuilder.MakeOffset(def, new Vector2(-0.0625f, 0f), false);
+                GunTools.MakeOffset(def, new Vector2(-0.0625f, 0f), false);
             }
 
             foreach (var clip in library.clips)

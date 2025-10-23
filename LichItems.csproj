@@ -36,16 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CrossChamber.cs" />
-    <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="LichsBook.cs" />
     <Compile Include="LichsBookItem.cs" />
     <Compile Include="LichsGun.cs" />
-    <Compile Include="ItemAPI\CustomSynergies.cs" />
-    <Compile Include="ItemAPI\FakePrefab.cs" />
-    <Compile Include="ItemAPI\FakePrefabHooks.cs" />
-    <Compile Include="ItemAPI\ItemBuilder.cs" />
-    <Compile Include="ItemAPI\ResourceExtractor.cs" />
-    <Compile Include="ItemAPI\SpriteBuilder.cs" />
     <Compile Include="LichModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -334,7 +327,7 @@
       <HintPath>packages\HarmonyX.2.7.0\lib\net35\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Alexandria, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EtG.Alexandria.0.4.17\lib\net35\Alexandria.dll</HintPath>
+      <HintPath>packages\EtG.Alexandria.0.5.0\lib\net35\Alexandria.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\EtG.GameLibs.2.1.9.1\lib\net35\Assembly-CSharp.dll</HintPath>
@@ -346,7 +339,7 @@
       <HintPath>packages\BepInEx.BaseLib.5.4.21\lib\net35\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="ModTheGungeonAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\EtG.ModTheGungeonAPI.1.9.1\lib\net35\ModTheGungeonAPI.dll</HintPath>
+      <HintPath>packages\EtG.ModTheGungeonAPI.1.9.2\lib\net35\ModTheGungeonAPI.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>packages\Mono.Cecil.0.10.4\lib\net35\Mono.Cecil.dll</HintPath>
