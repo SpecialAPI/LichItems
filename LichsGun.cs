@@ -52,6 +52,7 @@ namespace LichItems
             gun.barrelOffset.transform.localPosition = new Vector3(1.1875f, 0.5625f, 0f);
             gun.gunClass = GunClass.PISTOL;
             gun.InfiniteAmmo = true;
+            gun.PreventStartingOwnerFromDropping = true;
 
             var anim = gun.GetComponent<tk2dSpriteAnimator>();
             var shootAnim = anim.GetClipByName(gun.shootAnimation);
